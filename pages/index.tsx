@@ -1,6 +1,7 @@
-import type { NextPage } from 'next'
-import { BaseLayout } from '../components'
-import NftList from '../components/nft/list'
+import type { NextPage } from 'next';
+import { BaseLayout, NftList } from '../components';
+import nfts from "../content/meta.json";
+
 
 // @dev - This is your applications homepage 
 const Home: NextPage = () => {
@@ -18,7 +19,10 @@ const Home: NextPage = () => {
             </p>
           </div>
 
-        <NftList />
+        <NftList 
+          nfts={nfts}
+          
+          />
 
         </div>
       </div>
