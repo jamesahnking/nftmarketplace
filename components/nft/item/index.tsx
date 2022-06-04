@@ -1,3 +1,5 @@
+/* eslint-disable @next/next/no-img-element */
+
 import { FunctionComponent } from "react"
 
 // NFT Item Component
