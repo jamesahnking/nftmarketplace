@@ -1,7 +1,7 @@
 import type { NextPage } from 'next';
 import { BaseLayout, NftList } from '../components';
 import nfts from "../content/meta.json";
-
+import { NftMeta } from "../types/nft";
 
 // @dev - This is your applications homepage 
 const Home: NextPage = () => {
@@ -20,9 +20,9 @@ const Home: NextPage = () => {
           </div>
 
         <NftList 
-          nfts={nfts}
-          
-          />
+        // casting as NftMeta
+          nfts={ nfts as NftMeta[] }
+        />
 
         </div>
       </div>
