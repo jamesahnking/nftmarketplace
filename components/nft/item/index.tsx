@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable @next/next/no-img-element */
 
 import { FunctionComponent } from "react"
@@ -16,7 +17,7 @@ const NftItem: FunctionComponent<NftItemProps> = ({ item }) => {
         <div className="flex-shrink-0">
             <img
               className={`h-full w-full object-cover`}
-              src={"https://eincode.mypinata.cloud/ipfs/QmaQYCrX9Fg2kGijqapTYgpMXV7QPPzMwGrSRfV9TvTsfM/Creature_1.png"}
+              src={item.image}
               alt="New NFT"
             />
 
@@ -27,8 +28,8 @@ const NftItem: FunctionComponent<NftItemProps> = ({ item }) => {
                 Creatures NFT
               </p>
               <div className="block mt-2">
-                <p className="text-xl font-semibold text-gray-900">Eincode Creature #1</p>
-                <p className="mt-3 mb-3 text-base text-gray-500">Fierce violet creature. Very durable and tanky.</p>
+                <p className="text-xl font-semibold text-gray-900">{item.name}</p>
+                <p className="mt-3 mb-3 text-base text-gray-500">{item.description}.</p>
               </div>
             </div>
             <div className="overflow-hidden mb-4">
@@ -38,7 +39,7 @@ const NftItem: FunctionComponent<NftItemProps> = ({ item }) => {
                   <dd className="order-1 text-xl font-extrabold text-indigo-600">
                     <div className="flex justify-center items-center">
                       100
-                      {/* <img className="h-6" src="/images/small-eth.webp"/> */}
+                      <img className="h-6" src="/images/small-eth.webp" alt="ethereum icon"/>
                       ETH
                     </div>
                   </dd>
