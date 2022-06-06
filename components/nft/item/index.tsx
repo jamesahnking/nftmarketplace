@@ -1,10 +1,15 @@
 /* eslint-disable @next/next/no-img-element */
 
 import { FunctionComponent } from "react"
+import { NftMeta } from "../../../types/nft"
+
+type NftItemProps = {
+  item: NftMeta
+}
 
 // NFT Item Component
 
-const NftItem: FunctionComponent = () => {
+const NftItem: FunctionComponent<NftItemProps> = ({ item }) => {
   
     return (
         <>
