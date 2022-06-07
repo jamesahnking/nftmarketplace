@@ -40,18 +40,16 @@ const NftItem: FunctionComponent<NftItemProps> = ({ item }) => {
                     <div className="flex justify-center items-center">
                       100
                       <img className="h-6" src="/images/small-eth.webp" alt="ethereum icon"/>
-                      ETH
                     </div>
                   </dd>
                 </div>
-                <div className="flex flex-col px-4 pt-4">
-                  <dt className="order-2 text-sm font-medium text-gray-500">Health</dt>
-                  <dd className="order-1 text-xl font-extrabold text-indigo-600">100</dd>
-                </div>
-                <div className="flex flex-col px-4 pt-4">
-                  <dt className="order-2 text-sm font-medium text-gray-500">Attack</dt>
-                  <dd className="order-1 text-xl font-extrabold text-indigo-600">40</dd>
-                </div>
+                {/* Iterate over and provide traits and value from meta data dynamically*/}
+                { item.attributes.map(attribute => 
+                    <div key={attribute.trait_type}className="flex flex-col px-4 pt-4">
+                      <dt className="order-2 text-sm font-medium text-gray-500">{attribute.trait_type}</dt>
+                      <dd className="order-1 text-xl font-extrabold text-indigo-600">{attribute.value}</dd>
+                    </div>
+                )}
               </dl>
             </div>
             <div>
