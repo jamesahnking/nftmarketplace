@@ -11,7 +11,7 @@ const ATTRIBUTES = ["health", "attack", "speed"]
 
 const NftCreate: NextPage = () => {
 
-    const [nftURI, setNftURI] = useState("");
+    const [nftURI, setNftURI] = useState(""); //json data
     const [hasURI, setHasURI] = useState(false);
 
   return (
@@ -22,6 +22,7 @@ const NftCreate: NextPage = () => {
           { !nftURI &&
             <div className="flex">
               <div className="mr-2 font-bold underline">Do you have meta data already?</div>
+              
               <Switch
                 checked={hasURI}
                 onChange={() => setHasURI(!hasURI)}
