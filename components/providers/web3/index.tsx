@@ -1,6 +1,14 @@
 import { createContext, useContext, useState } from "react";
 import { FunctionComponent } from "react";
+import { MetaMaskInpageProvider } from "@metamask/providers";
+import { Contract, providers } from "ethers";
 
+// Export Web3 types - ? allowing undefined 
+export type Web3State = {
+  ethereum?: MetaMaskInpageProvider;
+  provider?: providers.Web3Provider;
+  contract?: Contract;
+}
 
 // The web3 provider will wrap all components in _app.tsx
 const Web3Context = createContext<any>(null);
@@ -11,7 +19,7 @@ interface Props {
 
 const Web3Provider: FunctionComponent<Props> = ({children}) => {
 
-  const [web3Api, setWeb3Api] = useState({test: "Hello Web3 Provider!"})
+  const [web3Api, setWeb3Api] = useState( {test: "Hello Web3 Provider!"} )
     
   return (
     <Web3Context.Provider value={web3Api}>
