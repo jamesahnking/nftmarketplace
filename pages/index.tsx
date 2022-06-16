@@ -3,12 +3,26 @@ import { BaseLayout, NftList } from '@ui';
 import nfts from "../content/meta.json";
 import { NftMeta } from '@_types/nft';
 import { useWeb3 } from '@providers/web3';
+
 // @dev - This is your applications homepage 
 const Home: NextPage = () => {
 
-  // inject web3 from web3
-  const { ethereum } = useWeb3();
-  console.log(ethereum);
+  // List provider from Web3
+  const { provider } = useWeb3();
+  console.log(provider);
+  
+  // get current account of Metamask wallet 
+  const getAccounts = async () => {
+    const accounts = await provider!.listAccounts();
+    //prints current Metamask account to console
+    console.log(accounts[0]);
+  }
+
+  // list accounts via getAccounts
+  if (provider) {
+    getAccounts();
+  }
+
   return (
     <BaseLayout>
       <div className="relative bg-gray-50 pt-16 pb-20 px-4 sm:px-6 lg:pt-24 lg:pb-28 lg:px-8">
