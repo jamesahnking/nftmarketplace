@@ -3,6 +3,7 @@ import { FunctionComponent } from "react";
 import { MetaMaskInpageProvider } from "@metamask/providers";
 import { Contract, providers } from "ethers";
 import { Web3State, createDefaultState } from "./utils";
+import { ethers } from "ethers";
 
 
 // The web3 provider will wrap all components in _app.tsx
@@ -14,17 +15,22 @@ interface Props {
 
 const Web3Provider: FunctionComponent<Props> = ({children}) => {
   const [web3Api, setWeb3Api] = useState<Web3State>(createDefaultState())
-    
+  
   // @dev MetaMask injects a global API into websites visited by its users at window.ethereum 
   useEffect(() => {
       function initWeb3() {
+
+        // Define 'provider'
+        const provider = new ethers.providers.Web3Provider(window.ethereum as any);
+
+        // Initializing Metamask Wallet
         setWeb3Api({
             ethereum: window.ethereum,
-            provider: null, 
+            provider,
             contract: null,
             isLoading: false
           })
-      }
+        }
       initWeb3();
   }, [])
 
