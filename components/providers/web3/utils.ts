@@ -2,14 +2,21 @@ import { MetaMaskInpageProvider } from "@metamask/providers";
 import { Contract, providers } from "ethers";
 
 
-// Export Web3 types - ? allowing undefined 
+// global window.ethereum definition 
+// @dev MetaMask injects a global API into websites visited by its users at window.ethereum 
+declare global {
+    interface Window {
+        ethereum: MetaMaskInpageProvider;
+    }
+}
+
+// Export Web3 types
 export type Web3Params= {
     ethereum: MetaMaskInpageProvider | null;
     provider: providers.Web3Provider | null;
     contract: Contract | null;
   }
 
- 
 // export params ant types 
 export type Web3State = {
     isLoading: boolean; //true wulile loading webState

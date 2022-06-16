@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { FunctionComponent } from "react";
 import { MetaMaskInpageProvider } from "@metamask/providers";
 import { Contract, providers } from "ethers";
@@ -15,7 +15,15 @@ interface Props {
 const Web3Provider: FunctionComponent<Props> = ({children}) => {
   const [web3Api, setWeb3Api] = useState<Web3State>(createDefaultState())
     
-  return (
+  // @dev MetaMask injects a global API into websites visited by its users at window.ethereum 
+  useEffect(() => {
+      function initWeb3() {
+        const ethereum = window.ethereum;
+      }
+  }, [])
+
+
+return (
     <Web3Context.Provider value={web3Api}>
         {children}
     </Web3Context.Provider>
