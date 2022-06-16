@@ -18,8 +18,14 @@ const Web3Provider: FunctionComponent<Props> = ({children}) => {
   // @dev MetaMask injects a global API into websites visited by its users at window.ethereum 
   useEffect(() => {
       function initWeb3() {
-        const ethereum = window.ethereum;
+        setWeb3Api({
+            ethereum: window.ethereum,
+            provider: null, 
+            contract: null,
+            isLoading: false
+          })
       }
+      initWeb3();
   }, [])
 
 
