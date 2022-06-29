@@ -7,12 +7,18 @@ import { useWeb3 } from '@providers/web3';
 // @dev - This is your applications homepage 
 const Home: NextPage = () => {
 
-  // List provider from Web3
-  const { provider } = useWeb3();
+  // Load Web3 provider and contract
+  const { provider, contract } = useWeb3();
+  
+  // print contract to console
+  console.log(contract);
+  
+  // print provider to console
   console.log(provider);
   
   // get current account of Metamask wallet 
   const getAccounts = async () => {
+    
     const accounts = await provider!.listAccounts();
     //prints current Metamask account to console
     console.log(accounts[0]);

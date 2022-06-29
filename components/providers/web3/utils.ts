@@ -1,4 +1,3 @@
-require('dotenv').config();
 import { MetaMaskInpageProvider } from "@metamask/providers";
 import { Contract, providers,ethers } from "ethers";
 
@@ -24,7 +23,6 @@ export type Web3State = {
     isLoading: boolean; //true wulile loading webState
 } & Web3Params
 
-
 // Set default loading state function
 export const createDefaultState = () => {
     return {
@@ -36,11 +34,7 @@ export const createDefaultState = () => {
     }
 }
 
-
-
-
 // Load contract into Next JS
-
 // import network contract lives on 
 const NETWORK_ID = process.env.NEXT_PUBLIC_NETWORK_ID;
 
@@ -60,6 +54,7 @@ export const loadContract = async (
     }
     //otherwise fetch the contracts json representation
     const res = await fetch(`/contracts/${name}.json`);
+    
     //store the file
     const Artifact = await res.json(); 
 

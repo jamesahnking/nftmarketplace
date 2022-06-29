@@ -1,8 +1,5 @@
-import { createContext, useContext, useEffect, useState } from "react";
-import { FunctionComponent } from "react";
-import { MetaMaskInpageProvider } from "@metamask/providers";
-import { Contract, providers } from "ethers";
-import { Web3State, createDefaultState } from "./utils";
+import { createContext, FunctionComponent, useContext, useEffect, useState } from "react";
+import { Web3State, createDefaultState, loadContract } from "./utils";
 import { ethers } from "ethers";
 
 
@@ -18,16 +15,19 @@ const Web3Provider: FunctionComponent<Props> = ({children}) => {
   
   // @dev MetaMask injects a global API into websites visited by its users at window.ethereum 
   useEffect(() => {
-      function initWeb3() {
+     async function initWeb3() {
 
         // Define 'provider'
         const provider = new ethers.providers.Web3Provider(window.ethereum as any);
+
+        // Load Contract 
+        const contract = await loadContract("NftMarket", provider); 
 
         // Initializing Metamask Wallet
         setWeb3Api({
             ethereum: window.ethereum,
             provider,
-            contract: null,
+            contract,
             isLoading: false
           })
         }
