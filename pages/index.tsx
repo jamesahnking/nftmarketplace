@@ -9,16 +9,24 @@ const Home: NextPage = () => {
 
   // Load Web3 provider and contract
   const { provider, contract } = useWeb3();
+
+  const getNftInfo = async () => {
+    console.log(await contract!.name());
+    console.log(await contract!.symbol());
+  }
+
+  // conditional  
+  if (contract) {
+    getNftInfo();
+  }
   
   // print contract to console
   console.log(contract);
-  
   // print provider to console
   console.log(provider);
   
   // get current account of Metamask wallet 
   const getAccounts = async () => {
-    
     const accounts = await provider!.listAccounts();
     //prints current Metamask account to console
     console.log(accounts[0]);

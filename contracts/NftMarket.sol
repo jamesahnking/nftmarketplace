@@ -5,8 +5,6 @@ import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 
 contract NftMarket is ERC721URIStorage {
      
-    constructor() ERC721("FuzzAlinesNFT", "FZLN") {
-    
-    }
+    constructor() ERC721("FuzzAlinesNFT", "FZLN") {}
 
 }
