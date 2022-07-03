@@ -1,10 +1,12 @@
 import { setupHooks, Web3Hooks } from "@hooks/web3/setupHooks";
 import { MetaMaskInpageProvider } from "@metamask/providers";
+import { Web3Dependencies } from "@_types/hooks";
 import { Contract, providers,ethers } from "ethers";
 
-
+// GLOBAL Application Functions and Types
 
 // global window.ethereum definition 
+
 // @dev MetaMask injects a global API into websites visited by its users at window.ethereum 
 declare global {
     interface Window {
@@ -12,22 +14,23 @@ declare global {
     }
 }
 
+// Make an item nullable
+type Nullable<T> = {
+    [P in keyof T]: T[P] | null;
+}
 
-// Export Web3 types
-export type Web3Params= {
-    ethereum: MetaMaskInpageProvider | null;
-    provider: providers.Web3Provider | null;
-    contract: Contract | null;
-  }
-
-
-// export types and params  ;-) Stackin Pramz!
+// Export types and params  ;-) Stackin Pramz!
 export type Web3State = {
     isLoading: boolean; //true while loading webState
     hooks: Web3Hooks; // hook definitions
-} & Web3Params
+} & Nullable<Web3Dependencies>
 
 
+type Web3Dependencies =  {
+    provider: providers.Web3Provider | null;
+    contract: Contract | null;
+    ethereum: MetaMaskInpageProvider| null;
+}
 // Set default loading state function
 export const createDefaultState = () => {
     return {
@@ -37,6 +40,20 @@ export const createDefaultState = () => {
         contract: null,
         isLoading: true,
         hooks:setupHooks({} as any),
+    }
+}
+
+// Capture web3 state 
+export const createWeb3State = ({
+    ethereum, provider, contract, isLoading 
+}: Web3Dependencies & {isLoading: boolean}) => { 
+    return {
+        // nothing has been loaded because its still loading ;-)
+        ethereum,
+        provider,
+        contract,
+        isLoading,
+        hooks:setupHooks({ethereum, provider, contract}),
     }
 }
 
