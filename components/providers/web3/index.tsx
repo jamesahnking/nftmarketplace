@@ -1,5 +1,5 @@
 import { createContext, FunctionComponent, useContext, useEffect, useState } from "react";
-import { Web3State, createDefaultState, loadContract } from "./utils";
+import { Web3State, createDefaultState, loadContract, createWeb3State } from "./utils";
 import { ethers } from "ethers";
 import { setupHooks } from "@hooks/web3/setupHooks";
 
@@ -25,13 +25,12 @@ const Web3Provider: FunctionComponent<Props> = ({children}) => {
         const contract = await loadContract("NftMarket", provider); 
 
         // Initializing Metamask Wallet
-        setWeb3Api({
-            ethereum: window.ethereum,
-            provider,
-            contract,
-            isLoading: false,
-            hooks: setupHooks({ethereum: window.ethereum, provider, contract})
-          })
+        setWeb3Api(createWeb3State({
+          ethereum: window.ethereum,
+          provider, 
+          contract, 
+          isLoading: false
+        }))
         }
       initWeb3();
   }, [])

@@ -1,4 +1,4 @@
-// hooks for types
+// Hook types
 import { MetaMaskInpageProvider } from "@metamask/providers";
 import { Contract, providers } from "ethers";
 import { SWRResponse } from "swr";
