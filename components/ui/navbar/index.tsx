@@ -5,8 +5,7 @@ import { Disclosure, Menu, Transition } from '@headlessui/react';
 import { BellIcon, MenuIcon, XIcon } from '@heroicons/react/outline';
 import Link from 'next/link';
 import ActiveLink from '../link';
-import { useAccount } from '@hooks/web3/useAccounts';
-// 
+import { useWeb3 } from '@providers/web3';
 
 const navigation = [
   { name: 'NFT Marketplaces', href: '/', current: true },
@@ -19,7 +18,10 @@ const navigation = [
 
 export default function Navbar() {
   
-  const { data } = useAccount ("Some Random Params ");
+  const { hooks } = useWeb3();
+  const { data } = hooks.useAccount("get data random string");
+
+  console.log(data);
 
   return (
     <Disclosure as="nav" className="bg-gray-800">
@@ -96,7 +98,7 @@ export default function Navbar() {
                     >
                       <Menu.Items className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
                         <Menu.Item>
-                          {({ active }) => (
+                          {({active }) => (
                             <Link href="/profile">
                               <a 
                                 className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}

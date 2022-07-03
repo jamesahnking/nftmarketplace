@@ -1,3 +1,4 @@
+import { setupHooks, Web3Hooks } from "@hooks/web3/setupHooks";
 import { MetaMaskInpageProvider } from "@metamask/providers";
 import { Contract, providers,ethers } from "ethers";
 
@@ -11,6 +12,7 @@ declare global {
     }
 }
 
+
 // Export Web3 types
 export type Web3Params= {
     ethereum: MetaMaskInpageProvider | null;
@@ -18,10 +20,13 @@ export type Web3Params= {
     contract: Contract | null;
   }
 
-// export params and types 
+
+// export types and params  ;-) Stackin Pramz!
 export type Web3State = {
-    isLoading: boolean; //true wulile loading webState
+    isLoading: boolean; //true while loading webState
+    hooks: Web3Hooks; // hook definitions
 } & Web3Params
+
 
 // Set default loading state function
 export const createDefaultState = () => {
@@ -31,6 +36,7 @@ export const createDefaultState = () => {
         provider: null,
         contract: null,
         isLoading: true,
+        hooks:setupHooks({} as any),
     }
 }
 
