@@ -26,11 +26,7 @@ export type Web3State = {
 } & Nullable<Web3Dependencies>
 
 
-type Web3Dependencies =  {
-    provider: providers.Web3Provider | null;
-    contract: Contract | null;
-    ethereum: MetaMaskInpageProvider| null;
-}
+
 // Set default loading state function
 export const createDefaultState = () => {
     return {
