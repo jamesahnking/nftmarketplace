@@ -1,5 +1,6 @@
 // Generate Next JS Webhooks 
 import { CryptoHookFactory } from "@_types/hooks";
+import { providers } from "ethers";
 import useSWR from "swr";
 
 // The name “SWR” is derived from stale-while-revalidate, 
@@ -7,10 +8,9 @@ import useSWR from "swr";
 // SWR is a strategy to first return the data from cache (stale), then 
 // send the fetch request (revalidate), and finally come with the up-to-date data.
 
-type AccountHookFactory = CryptoHookFactory<string, string>
+type AccountHookFactory = CryptoHookFactory<string>
 
 export type UseAccountHook = ReturnType<AccountHookFactory>
-
 
 // hookFactory dependencies are:
 // provider
@@ -18,13 +18,13 @@ export type UseAccountHook = ReturnType<AccountHookFactory>
 // contract (web3State)
 // a function that returns a function
 
-export const hookFactory: AccountHookFactory = (deps) => (params) => {
-    const swrRes = useSWR("web3/useAccount", () => {
-        console.log(deps);
-        console.log(params);
-        return "Test User"
-    })
-
+export const hookFactory: AccountHookFactory = ({provider}) => (params) => {
+   const swrRes = useSWR(
+        provider ? "web3/useAccount" : null, 
+        () => {
+            return "Test User"
+            }
+        )
     return swrRes;
 }
 
