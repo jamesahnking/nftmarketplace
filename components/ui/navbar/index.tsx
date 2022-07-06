@@ -29,6 +29,7 @@ export default function Navbar() {
       {({ open }) => {
         return (
           <>
+          { account.data }
             <div className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
               <div className="relative flex items-center justify-between h-16">
                 <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
@@ -78,6 +79,7 @@ export default function Navbar() {
                   </button>
                   {/* Profile dropdown */}
                   { 
+
                   false ?  // is it Connected: false or true
                   <Menu as="div" className="ml-3 relative z-10">
                     <div>
@@ -119,6 +121,7 @@ export default function Navbar() {
                      // in the next lecture!
                     //  alert("connecting to wallet");
                      account.connect();
+                     account.data();
                    }}
                    type="button"
                    className="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded-full shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
