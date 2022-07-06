@@ -15,7 +15,7 @@ export type UseAccountHook = ReturnType<AccountHookFactory>
 // b. ethereum
 // c. contract (web3State)
 
-export const hookFactory: AccountHookFactory = ({provider}) => () => {
+export const hookFactory: AccountHookFactory = ({provider, ethereum}) => () => {
    const swrRes = useSWR(
         provider ? "web3/useAccount" : null, 
           async () => {
@@ -32,6 +32,17 @@ export const hookFactory: AccountHookFactory = ({provider}) => () => {
             // update the data when refocusing the window 
             { revalidateOnFocus: false }
         );
+
+        // Wallet Connect Function
+        const connect = async () => {
+            try {
+                // open the connection to connect wallet
+                ethereum?.request({method: "eth_requestAccounts"});
+            } catch(e) {
+                console.error(e);
+                }
+        }
+
     // The response will contains the user account address      
-    return swrRes;
+    return { ...swrRes, connect };
 }
