@@ -39,7 +39,7 @@ export const createDefaultState = () => {
     }
 }
 
-// Capture web3 state 
+// Create web3 state 
 export const createWeb3State = ({
     ethereum, provider, contract, isLoading 
 }: Web3Dependencies & {isLoading: boolean}) => { 

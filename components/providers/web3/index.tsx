@@ -20,7 +20,6 @@ const Web3Provider: FunctionComponent<Props> = ({children}) => {
 
         // Define 'provider'
         const provider = new ethers.providers.Web3Provider(window.ethereum as any);
-
         // Load Contract 
         const contract = await loadContract("NftMarket", provider); 
 
@@ -35,6 +34,7 @@ const Web3Provider: FunctionComponent<Props> = ({children}) => {
       initWeb3();
   }, [])
 
+// All components and hooks will have access to state
 
 return (
     <Web3Context.Provider value={web3Api}>

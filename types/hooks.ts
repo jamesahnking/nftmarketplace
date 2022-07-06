@@ -10,13 +10,11 @@ export type Web3Dependencies = {
     ethereum: MetaMaskInpageProvider;
 }
 
-// Rename SWRResponse
-export type CryptoSWRResponse <D = any> = SWRResponse;
-
 // Handler funt to return SWRResponse
-export type CryptoHandlerHook <D = any, P = any>  = (params: any) => CryptoSWRResponse;
+export type CryptoHandlerHook <D = any, P = any>  = (params?: any) => CryptoSWRResponse;
 
-// Accepts web3 dependencies 
+// Accepts web3 dependencies - exactly whats needed to structure the function
 export type CryptoHookFactory <D = any, P = any> = { (d: Partial <Web3Dependencies>):CryptoHandlerHook; }
 
-
+// Rename SWRResponse
+export type CryptoSWRResponse <D = any> = SWRResponse<D>;

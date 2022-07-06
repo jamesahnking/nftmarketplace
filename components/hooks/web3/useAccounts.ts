@@ -1,32 +1,37 @@
-// Generate Next JS Webhooks 
+// Generate Next JS Webhooks for user account
 import { CryptoHookFactory } from "@_types/hooks";
-import { providers } from "ethers";
+import { getAccountPath } from "ethers/lib/utils";
 import useSWR from "swr";
 
 // The name “SWR” is derived from stale-while-revalidate, 
-// a HTTP cache invalidation strategy popularized by HTTP RFC 5861. 
 // SWR is a strategy to first return the data from cache (stale), then 
 // send the fetch request (revalidate), and finally come with the up-to-date data.
 
 type AccountHookFactory = CryptoHookFactory<string>
-
 export type UseAccountHook = ReturnType<AccountHookFactory>
 
 // hookFactory dependencies are:
-// provider
-// ethereum
-// contract (web3State)
-// a function that returns a function
+// a. provider
+// b. ethereum
+// c. contract (web3State)
 
-export const hookFactory: AccountHookFactory = ({provider}) => (params) => {
+export const hookFactory: AccountHookFactory = ({provider}) => () => {
    const swrRes = useSWR(
         provider ? "web3/useAccount" : null, 
-        () => {
-            return "Test User"
-            }
-        )
+          async () => {
+                console.log("AccountHookFactory REVALIDATING!")
+
+                const accounts = await provider!.listAccounts();
+                const account = accounts[0];
+
+                if(!account) {
+                    throw "Cant retrieve any accounts! Connect to a web3 wallet."
+                }
+                return account;   
+            }, 
+            // update the data when refocusing the window 
+            { revalidateOnFocus: false }
+        );
+    // The response will contains the user account address      
     return swrRes;
 }
-
-// export const useAccount = hookFactory({ethereum: undefined, provider: undefined});
-
