@@ -78,7 +78,15 @@ export default function Navbar() {
                     <BellIcon className="h-6 w-6" aria-hidden="true" />
                   </button>
 
+
+
+
+
+
                   {/* Profile dropdown */}
+                  { 
+                  // is it Connected: false or true
+                  false ?
                   <Menu as="div" className="ml-3 relative z-10">
                     <div>
                       <Menu.Button className="bg-gray-800 flex text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
@@ -113,7 +121,20 @@ export default function Navbar() {
 
                       </Menu.Items>
                     </Transition> 
-                  </Menu>
+                  </Menu> : // otherwise show button
+                   <button
+                   onClick={() => {
+                     // in the next lecture!
+                     alert("connecting to wallet");
+                    //  account.connect();
+                   }}
+                   type="button"
+                   className="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded-full shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                 >
+                   Connect Wallet
+                 </button>
+                  }
+
                 </div>
               </div>
             </div>
