@@ -3,18 +3,19 @@ import { MetaMaskInpageProvider } from "@metamask/providers";
 import { Contract, providers } from "ethers";
 import { SWRResponse } from "swr";
 
-// Web3 needs
+
+// Web3 Dependency Type definition
 export type Web3Dependencies = {
     provider: providers.Web3Provider;
     contract: Contract;
     ethereum: MetaMaskInpageProvider;
 }
 
-// Handler funt to return SWRResponse
-export type CryptoHandlerHook <D = any, P = any>  = (params?: any) => CryptoSWRResponse;
+// Type definition for the SWR handler and respons structure
+export type CryptoHandlerHook<D = any, R = any, P = any> = (params?: P) => CryptoSWRResponse<D, R>
 
-// Accepts web3 dependencies - exactly whats needed to structure the function
-export type CryptoHookFactory <D = any, P = any> = { (d: Partial <Web3Dependencies>):CryptoHandlerHook; }
+// Type definition for web3 connection and retrieval of account and response structure, 
+export type CryptoHookFactory <D = any, R =any, P = any> = { (d: Partial <Web3Dependencies>):CryptoHandlerHook; }
 
-// Rename SWRResponse
-export type CryptoSWRResponse <D = any> = SWRResponse<D>;
+//swr response type definintion 
+export type CryptoSWRResponse <D = any, R = any> = SWRResponse<D> & R;

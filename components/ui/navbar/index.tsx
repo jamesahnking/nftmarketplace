@@ -5,7 +5,6 @@ import { Disclosure, Menu, Transition } from '@headlessui/react';
 import { BellIcon, MenuIcon, XIcon } from '@heroicons/react/outline';
 import Link from 'next/link';
 import ActiveLink from '../link';
-import { useWeb3 } from '@providers/web3';
 import { useAccount } from '@hooks/web3';
 
 const navigation = [
@@ -77,16 +76,9 @@ export default function Navbar() {
                     <span className="sr-only">View notifications</span>
                     <BellIcon className="h-6 w-6" aria-hidden="true" />
                   </button>
-
-
-
-
-
-
                   {/* Profile dropdown */}
                   { 
-                  // is it Connected: false or true
-                  false ?
+                  false ?  // is it Connected: false or true
                   <Menu as="div" className="ml-3 relative z-10">
                     <div>
                       <Menu.Button className="bg-gray-800 flex text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
