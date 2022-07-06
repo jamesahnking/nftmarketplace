@@ -1,6 +1,7 @@
 // Generate Next JS Webhooks for user account
 import { CryptoHookFactory } from "@_types/hooks";
 import { getAccountPath } from "ethers/lib/utils";
+import { useEffect } from "react";
 import useSWR from "swr";
 
 // This file Responsible for the initialization of our useAccount Function
@@ -15,12 +16,12 @@ type UseAccountResponse = {
     connect: () => void;
 }
 
-// the string from swrRes and the response from the wallet
+// The string from swrRes and the response from the wallet
 type AccountHookFactory = CryptoHookFactory<string, UseAccountResponse>
 
 export type UseAccountHook = ReturnType<AccountHookFactory>
 
-// hookFactory dependencies are:
+// HookFactory Dependencies are:
 // a. provider
 // b. ethereum
 // c. contract (web3State)
@@ -39,10 +40,33 @@ export const hookFactory: AccountHookFactory = ({provider, ethereum}) => () => {
                 }
                 return account;   
             }, 
-            // update the data when refocusing the window 
+            // Update the data when refocusing the window 
             { revalidateOnFocus: false }
         );
 
+        
+        // State for handling when accouts have changed 
+        useEffect(() =>{ 
+            // subscribe 
+            ethereum?.on('accountsChanged', handleAccountsChanged);
+            return () => {
+                //unsubscribe from listener
+               ethereum?.removeListener("accountsChanged",handleAccountsChanged);
+            }
+        })
+
+        // Alerts when the account has changed 
+        const handleAccountsChanged = (...args: unknown[]) => {
+            const accounts = args[0] as string[]; 
+            if (accounts.length === 0) {
+                console.error("Please, connect to your Web3 wallet");
+            } else if (accounts[0] !== swrRes.data) {
+                alert("account has changed");
+                console.log(accounts[0]);
+            }
+        }   
+        
+    
         // Wallet Connect Function
         const connect = async () => {
             try {
@@ -52,6 +76,7 @@ export const hookFactory: AccountHookFactory = ({provider, ethereum}) => () => {
                 console.error(e);
                 }
         }
+
 
     // The response will contains the user account address      
     return { ...swrRes, connect };
