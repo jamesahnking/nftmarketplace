@@ -30,6 +30,7 @@ export type UseAccountHook = ReturnType<AccountHookFactory>
 export const hookFactory: AccountHookFactory = ({provider, ethereum, isLoading}) => () => {
    const {data, mutate, isValidating, ...swrRes} = useSWR(
         provider ? "web3/useAccount" : null, 
+        // ask for new data 
           async () => {
                 console.log("AccountHookFactory REVALIDATING!")
 
@@ -44,11 +45,10 @@ export const hookFactory: AccountHookFactory = ({provider, ethereum, isLoading})
             // Update the data when refocusing the window 
             { revalidateOnFocus: false }
         );
-
-        
+       
         // State for handling when accouts have changed 
         useEffect(() =>{ 
-            // subscribe 
+            // subscribe to listener
             ethereum?.on('accountsChanged', handleAccountsChanged);
             return () => {
                 //unsubscribe from listener
@@ -66,7 +66,6 @@ export const hookFactory: AccountHookFactory = ({provider, ethereum, isLoading})
             }
         }   
 
-    
         // Wallet Connect Function
         const connect = async () => {
             try {
@@ -77,15 +76,13 @@ export const hookFactory: AccountHookFactory = ({provider, ethereum, isLoading})
                 }
         }
 
-
-    // The response will contains the user account address      
     return { 
-        ...swrRes, 
-        data, 
-        isValidating,
-        isLoading: isLoading || isValidating,
-        isInstalled: ethereum?.isMetaMask || false, 
-        mutate, 
-        connect 
+        ...swrRes, //hookFactory
+        data, //hookFactory
+        isValidating, //hookFactory
+        isLoading: isLoading || isValidating, //hookFactory
+        isInstalled: ethereum?.isMetaMask || false, //hookFactory
+        mutate, // handleAccountsChanged
+        connect // connect
     };
 }
