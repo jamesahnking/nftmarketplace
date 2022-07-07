@@ -6,7 +6,7 @@ import { BellIcon, MenuIcon, XIcon } from '@heroicons/react/outline';
 import Link from 'next/link';
 import ActiveLink from '../link';
 import { useAccount } from '@hooks/web3';
-import WalletConnectButton from './Walletbar';
+import WalletConnectButton from './WalletConnectButton';
 
 const navigation = [
   { name: 'NFT Marketplaces', href: '/', current: true },
