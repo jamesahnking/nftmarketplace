@@ -26,7 +26,6 @@ export type Web3State = {
 } & Nullable<Web3Dependencies>
 
 
-
 // Set default loading state function
 export const createDefaultState = () => {
     return {
@@ -35,7 +34,7 @@ export const createDefaultState = () => {
         provider: null,
         contract: null,
         isLoading: true,
-        hooks:setupHooks({} as any),
+        hooks:setupHooks({isLoading: true} as any),
     }
 }
 

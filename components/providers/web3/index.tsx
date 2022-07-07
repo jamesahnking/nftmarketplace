@@ -13,29 +13,30 @@ interface Props {
 
 const Web3Provider: FunctionComponent<Props> = ({children}) => {
   const [web3Api, setWeb3Api] = useState<Web3State>(createDefaultState())
-  
+
   // @dev MetaMask injects a global API into websites visited by its users at window.ethereum 
   useEffect(() => {
      async function initWeb3() {
-
-        // Define 'provider'
-        const provider = new ethers.providers.Web3Provider(window.ethereum as any);
-        // Load Contract 
-        const contract = await loadContract("NftMarket", provider); 
-
-        // Initializing Metamask Wallet
-        setWeb3Api(createWeb3State({
-          ethereum: window.ethereum,
-          provider, 
-          contract, 
-          isLoading: false
+        try {
+          // Define 'provider'
+          const provider = new ethers.providers.Web3Provider(window.ethereum as any);
+          // Load Contract 
+          const contract = await loadContract("NftMarket", provider);
+          // Initializing Metamask Wallet
+          setWeb3Api(createWeb3State({
+            ethereum: window.ethereum,
+            provider, 
+            contract, 
+            isLoading: false
         }))
+        } catch(e: any) {
+          console.error(e.message);
         }
+    }
       initWeb3();
   }, [])
 
-// All components and hooks will have access to state
-
+  // All components and hooks will have access to state
 return (
     <Web3Context.Provider value={web3Api}>
         {children}
