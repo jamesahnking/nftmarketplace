@@ -9,6 +9,8 @@ export type Web3Dependencies = {
     provider: providers.Web3Provider;
     contract: Contract;
     ethereum: MetaMaskInpageProvider;
+    isLoading: boolean;
+
 }
 
 // Type definition for the SWR handler and respons structure
@@ -17,5 +19,5 @@ export type CryptoHandlerHook<D = any, R = any, P = any> = (params?: P) => Crypt
 // Type definition for web3 connection and retrieval of account and response structure, 
 export type CryptoHookFactory <D = any, R =any, P = any> = { (d: Partial <Web3Dependencies>):CryptoHandlerHook; }
 
-//swr response type definintion 
+// swr response type definintion 
 export type CryptoSWRResponse <D = any, R = any> = SWRResponse<D> & R;
