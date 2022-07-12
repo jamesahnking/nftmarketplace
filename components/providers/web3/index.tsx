@@ -30,7 +30,7 @@ const Web3Provider: FunctionComponent<Props> = ({children}) => {
         }))
         } catch(e: any) {
           console.error(e.message);
-          // => callback if theres an issue and sest loading to false 
+          // => callback if theres no wallet installed 
           setWeb3Api((api) => createWeb3State({
             ...api as any,
             isLoading:false,
