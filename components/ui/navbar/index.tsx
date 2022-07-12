@@ -30,7 +30,7 @@ export default function Navbar() {
       {({ open }) => {
         return (
           <>
-          { account.data }
+          {/* { account.data } */}
             <div className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
               <div className="relative flex items-center justify-between h-16">
                 <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
@@ -78,6 +78,7 @@ export default function Navbar() {
                     <span className="sr-only">View notifications</span>
                     <BellIcon className="h-6 w-6" aria-hidden="true" />
                   </button>
+                
                   <WalletConnectButton
                     isInstalled={ account.isInstalled }
                     isLoading={ account.isLoading }
