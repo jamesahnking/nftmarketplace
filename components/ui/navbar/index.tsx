@@ -1,11 +1,9 @@
 /* eslint-disable @next/next/no-img-element */
 
-import { Fragment } from 'react';
-import { Disclosure, Menu, Transition } from '@headlessui/react';
+import { Disclosure } from '@headlessui/react';
 import { BellIcon, MenuIcon, XIcon } from '@heroicons/react/outline';
-import Link from 'next/link';
 import ActiveLink from '../link';
-import { useAccount } from '@hooks/web3';
+import { useAccount, useNetwork } from '@hooks/web3';
 import WalletConnectButton from './WalletConnectButton';
 
 const navigation = [
@@ -19,11 +17,15 @@ const navigation = [
 
 export default function Navbar() {
   
-  // obtains entire state 
+  // Obtains entire state 
   const { account } = useAccount();
+  const { network } = useNetwork();
 
-  console.log("Is Loading: ", account.isLoading);
-  console.log("Is Installed: ", account.isInstalled);
+  console.log("Network Loading", network.isLoading);
+  console.log(network.data);
+  
+  // console.log("Is Loading: ", account.isLoading);
+  // console.log("Is Installed: ", account.isInstalled);
 
   return (
     <Disclosure as="nav" className="bg-gray-800">

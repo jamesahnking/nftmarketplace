@@ -1,6 +1,5 @@
 // Generate Next JS Webhooks for user account
 import { CryptoHookFactory } from "@_types/hooks";
-import { getAccountPath } from "ethers/lib/utils";
 import { useEffect } from "react";
 import useSWR from "swr";
 
