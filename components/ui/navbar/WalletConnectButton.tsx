@@ -23,6 +23,7 @@ const WalletConnectButton: FunctionComponent<WalletConnectProps> = ({
 
     if(isLoading) {
       return (
+        // display button with Loading ... inside of it until Web3 state has loaded
         <div>
           <button
             onClick={() => {}}
@@ -34,7 +35,7 @@ const WalletConnectButton: FunctionComponent<WalletConnectProps> = ({
         </div>
       )
     }
-  
+    // if state is loaded - display account image and menue dropdoan with adddress and Profile in the list.
     if (account) {
       return (
         <Menu as="div" className="ml-3 relative">

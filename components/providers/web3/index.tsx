@@ -1,7 +1,6 @@
 import { createContext, FunctionComponent, useContext, useEffect, useState } from "react";
 import { Web3State, createDefaultState, loadContract, createWeb3State } from "./utils";
 import { ethers } from "ethers";
-import { setupHooks } from "@hooks/web3/setupHooks";
 
 
 // The web3 provider will wrap all components in _app.tsx
@@ -31,12 +30,17 @@ const Web3Provider: FunctionComponent<Props> = ({children}) => {
         }))
         } catch(e: any) {
           console.error(e.message);
+          // => callback if theres an issue and sest loading to false 
+          setWeb3Api((api) => createWeb3State({
+            ...api as any,
+            isLoading:false,
+          }))
         }
     }
       initWeb3();
   }, [])
 
-  // All components and hooks will have access to state
+  // Return the web3 wrapper 
 return (
     <Web3Context.Provider value={web3Api}>
         {children}
