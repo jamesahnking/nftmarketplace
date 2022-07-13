@@ -12,6 +12,25 @@ function pageReload() {
   window.location.reload();
 }
 
+const handleAccount = (ethereum: MetaMaskInpageProvider ) => async () => {
+  const isLocked = !(await ethereum._metamask.isUnlocked());
+  // if not unlocked reload page
+  if (isLocked) { pageReload(); }
+}
+
+
+// universal load and reload
+const setGlobalListeners = (ethereum: MetaMaskInpageProvider) => { 
+  ethereum.on("chainChanged", pageReload); 
+  ethereum.on("accountsChanged", handleAccount(ethereum));
+}
+
+const removeGlobalListeners = (ethereum: MetaMaskInpageProvider) => { 
+  ethereum.on("chainChanged", pageReload);
+  ethereum.on("accountsChanged", handleAccount(ethereum));
+
+}
+     
 
 interface Props {
     children: React.ReactNode;
@@ -52,17 +71,7 @@ const Web3Provider: FunctionComponent<Props> = ({children}) => {
   }, [])
 
 
-  // universal load and reload
-  const setGlobalListeners = (ethereum: 
-    MetaMaskInpageProvider) => {
-      ethereum.on("chainChanged", pageReload);
-    }
 
-  const removeGlobalListeners = (ethereum: 
-    MetaMaskInpageProvider) => {
-      ethereum.on("chainChanged", pageReload);
-    }
-     
 
   // Return the web3 wrapper 
 return (
