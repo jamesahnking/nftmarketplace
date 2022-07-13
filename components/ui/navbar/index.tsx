@@ -22,7 +22,7 @@ export default function Navbar() {
   const { network } = useNetwork();
 
   console.log("Network Loading", network.isLoading);
-  console.log(network.data);
+  // console.log(network.data);
   
   // console.log("Account Is Loading: ", account.isLoading);
   // console.log("Account Is Installed: ", account.isInstalled);
