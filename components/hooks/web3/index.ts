@@ -9,7 +9,7 @@ export const useAccount = () => {
         account: swrRes // grab the response and pass on to components
     }
 }
-
+ 
 // Network Abstraction
 export const useNetwork = () => {
     const hooks =  useHooks();
