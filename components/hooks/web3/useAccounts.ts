@@ -42,7 +42,9 @@ export const hookFactory: AccountHookFactory = ({provider, ethereum, isLoading})
                 return account;   
             }, 
             // Update the data when refocusing the window 
-            { revalidateOnFocus: false }
+            { revalidateOnFocus: true,
+                shouldRetryOnError: true
+             }
         );
        
         // State for handling when accouts have changed 
