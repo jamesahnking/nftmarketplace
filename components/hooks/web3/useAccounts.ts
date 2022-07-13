@@ -41,9 +41,9 @@ export const hookFactory: AccountHookFactory = ({provider, ethereum, isLoading})
                 }
                 return account;   
             }, 
-            // Update the data when refocusing the window 
-            { revalidateOnFocus: true,
-                shouldRetryOnError: true
+
+            { revalidateOnFocus: false,
+              shouldRetryOnError: false
              }
         );
        
@@ -81,7 +81,7 @@ export const hookFactory: AccountHookFactory = ({provider, ethereum, isLoading})
         ...swrRes, //hookFactory
         data, //hookFactory
         isValidating, //hookFactory
-        isLoading: isLoading || isValidating, //hookFactory
+        isLoading: isLoading as boolean, //hookFactory
         isInstalled: ethereum?.isMetaMask || false, //hookFactory
         mutate, // handleAccountsChanged
         connect // connect

@@ -51,6 +51,6 @@ export const hookFactory: NetworkHookFactory = ({provider, isLoading,}) => () =>
         isValidating, //hookFactory
         targetNetwork,
         isSupported: data === targetNetwork,
-        isLoading: isLoading || isValidating, //hookFactory
+        isLoading: isLoading as boolean, //hookFactory
     };
 }

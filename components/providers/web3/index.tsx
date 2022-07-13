@@ -4,9 +4,6 @@ import { ethers } from "ethers";
 import { MetaMaskInpageProvider } from "@metamask/providers";
 
 
-// The web3 provider will wrap all components in _app.tsx
-const Web3Context = createContext<Web3State>(createDefaultState());
-
 // Reloads the browser
 function pageReload() {
   window.location.reload();
@@ -18,19 +15,20 @@ const handleAccount = (ethereum: MetaMaskInpageProvider ) => async () => {
   if (isLocked) { pageReload(); }
 }
 
-
-// universal load and reload
+// Universal load and reload
 const setGlobalListeners = (ethereum: MetaMaskInpageProvider) => { 
   ethereum.on("chainChanged", pageReload); 
   ethereum.on("accountsChanged", handleAccount(ethereum));
 }
 
 const removeGlobalListeners = (ethereum: MetaMaskInpageProvider) => { 
-  ethereum.on("chainChanged", pageReload);
-  ethereum.on("accountsChanged", handleAccount(ethereum));
+  ethereum?.removeListener("chainChanged", pageReload);
+  ethereum?.removeListener("accountsChanged", handleAccount(ethereum));
 
 }
-     
+
+// The web3 provider will wrap all components in _app.tsx
+const Web3Context = createContext<Web3State>(createDefaultState());
 
 interface Props {
     children: React.ReactNode;
@@ -69,8 +67,6 @@ const Web3Provider: FunctionComponent<Props> = ({children}) => {
       initWeb3();
       return() => removeGlobalListeners(window.ethereum);
   }, [])
-
-
 
 
   // Return the web3 wrapper 
