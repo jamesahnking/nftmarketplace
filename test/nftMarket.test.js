@@ -1,11 +1,9 @@
 // Test intended for use with with Truffle
 const { assert } = require("console");
-const { Contract } = require("ethers");
-const { idText } = require("typescript");
 
 const NftMarket = artifacts.require("NftMarket");
 
-Contract("NftMarket", accounts => {
+contract("NftMarket", accounts => {
     let _contract = null;
 
     before(async() => {
@@ -15,8 +13,7 @@ Contract("NftMarket", accounts => {
 
     describe("Mint token", () => {
         it("Should resolve into true value", () => {
-            let numberOfNfts = 12;
-            assert(numberOfNfts == 12, "Value is NOT true");
+            assert(true, "Value is NOT true");
         })
     })
 }) 

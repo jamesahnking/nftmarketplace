@@ -9,15 +9,15 @@ contract NftMarket is ERC721URIStorage {
     // @dev: For incrementing and decrementing 
     using Counters for Counters.Counter;
     
-    // @dev: how many nfts are for sale items for sale on the market 
+    // @dev: _listedItems how many nfts are for sale items for sale on the market 
+    // @dev: _tokenIds nft total that have been created for the smart contract. 
     Counters.Counter private _listedItems;
-    // @dev: nft token id total that have been created for the smart contract. 
     Counters.Counter private _tokenIds;
      
-    constructor() ERC721("FuzzWhalinesNFT", "FZLN") {}
+    constructor() ERC721("FuzzAlinesNFT", "FZLN") {}
 
-    // gerenate new nft token 
-    // nft uri is the json wiht the metadata 
+    // mint token (NFT)
+    // @dev ntokenURI is the json wiht the metadata on pinata 
     function mintToken(string memory tokenURI) public payable returns (uint) {
        
        //increament token counter 
