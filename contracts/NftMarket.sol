@@ -78,7 +78,7 @@ contract NftMarket is ERC721URIStorage {
         (NftItem memory) {
             return _idToNftItem[tokenId];
         }
-    // @dev retrieve the amount of nfts generated to present
+    // @dev retrieve the amount of nfts generated at present time
     function listedItemCount() public view returns (uint) {
         return _listedItems.current();
     }
