@@ -31,6 +31,16 @@ contract("NftMarket", accounts => {
             const tokenExistence = await _contract.tokenURIExists(1);
             assert.equal(tokenExistence, tokenExists, "The token does exists");
          })
+
+         it("Should not be possible to createa n NFT with a previously used tokenURI", async () => {
+            try{
+                await _contract.mintToken(tokenURI, {
+                    from: accounts[0]
+                })
+            } catch(error) {
+                assert(error, "NFT was minted with previously used tokenURI");
+            }
+         })
     }) 
 
 })  
