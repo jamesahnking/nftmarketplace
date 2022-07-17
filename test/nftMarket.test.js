@@ -10,6 +10,7 @@ contract("NftMarket", accounts => {
 
     describe("Mint token", () => {
         const tokenURI = "https://test.com";
+        const tokenExists = false;
         before(async()=>{
             await _contract.mintToken(tokenURI,{
                 from: accounts[0]
@@ -21,10 +22,14 @@ contract("NftMarket", accounts => {
             assert.equal(owner, accounts[0], "Owner of token is not matching address [0]")
          })
 
-
          it("First token should point ot the correct tokenURI", async () => {
             const actualTokenURI = await _contract.tokenURI(1);
             assert.equal(actualTokenURI, tokenURI, "tokenURI is not correct" );
+         })
+
+         it("First token should exists", async () => {
+            const tokenExistence = await _contract.tokenURIExists(1);
+            assert.equal(tokenExistence, tokenExists, "The token does exists");
          })
     }) 
 

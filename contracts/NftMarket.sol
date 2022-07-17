@@ -8,21 +8,25 @@ contract NftMarket is ERC721URIStorage {
    
     // @dev: For incrementing and decrementing 
     using Counters for Counters.Counter;
-    
+
+    // @dev: list of used tokenIDs
+    mapping(string => bool) private _usedTokenURIs;
+
     // @dev: _listedItems how many nfts are for sale items for sale on the market 
-    // @dev: _tokenIds nft total that have been created for the smart contract. 
+    // _tokenIds nft total that have been created for the smart contract. 
     Counters.Counter private _listedItems;
     Counters.Counter private _tokenIds;
      
     constructor() ERC721("FuzzAlinesNFT", "FZLN") {}
 
     // mint token (NFT)
-    // @dev ntokenURI is the json wiht the metadata on pinata 
     function mintToken(string memory tokenURI) public payable returns (uint) {
-       
+        require(!tokenURIExists(tokenURI), "Token URI already exists");
+
        //increament token counter 
         _tokenIds.increment();
         _listedItems.increment();
+        _usedTokenURIs[tokenURI] = true;
 
         // get the value of the current token 
         uint newTokenId = _tokenIds.current();
@@ -31,6 +35,11 @@ contract NftMarket is ERC721URIStorage {
         _setTokenURI(newTokenId, tokenURI);
 
         return newTokenId;
+    }
+   
+    // Verify token existence 
+    function tokenURIExists(string memory tokenURI) public view returns (bool) {
+        return _usedTokenURIs[tokenURI] == true;
     }
 
 }
