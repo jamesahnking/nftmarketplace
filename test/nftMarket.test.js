@@ -6,8 +6,6 @@ contract("NftMarket", accounts => {
     let _contract = null;
     let _nftPrice = ethers.utils.parseEther("0.3").toString();
 
-
-
     before(async() => {
         _contract = await NftMarket.deployed();
         })
@@ -51,6 +49,13 @@ contract("NftMarket", accounts => {
             assert.equal(listedItemCount.toNumber(), 1, "Listed item count is not 1");
    
          })
-    }) 
 
+         it("Should have created an NFT item", async () => {
+            const nftItem = await _contract.getNftItem(1);
+            assert.equal(nftItem.tokenId, 1, " Tokenid is not 1");
+            assert.equal(nftItem.price, _nftPrice, "Nft price not correct");
+            assert.equal(nftItem.creator, accounts[0], "Creator is not account[0]");
+            assert.equal(nftItem.isListed, true, "Token is not listed");
+         })
+    }) 
 })  
