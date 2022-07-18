@@ -5,6 +5,7 @@ const { ethers } = require("ethers");
 contract("NftMarket", accounts => {
     let _contract = null;
     let _nftPrice = ethers.utils.parseEther("0.3").toString();
+    let _listingPrice = ethers.utils.parseEther("0.025").toString();
 
     before(async() => {
         _contract = await NftMarket.deployed();
@@ -13,9 +14,11 @@ contract("NftMarket", accounts => {
     describe("Mint token", () => {
         const tokenURI = "https://test.com";
         const tokenExists = false;
+        
         before(async()=>{
             await _contract.mintToken(tokenURI, _nftPrice,{
-                from: accounts[0]
+                from: accounts[0],
+                value: _listingPrice
             })
         })
 
@@ -24,25 +27,25 @@ contract("NftMarket", accounts => {
             assert.equal(owner, accounts[0], "Owner of token is not matching address [0]")
          })
 
-         it("First token should point ot the correct tokenURI", async () => {
-            const actualTokenURI = await _contract.tokenURI(1);
-            assert.equal(actualTokenURI, tokenURI, "tokenURI is not correct" );
-         })
+        it("First token should point ot the correct tokenURI", async () => {
+        const actualTokenURI = await _contract.tokenURI(1);
+        assert.equal(actualTokenURI, tokenURI, "tokenURI is not correct" );
+        })
 
-         it("First token should exists", async () => {
-            const tokenExistence = await _contract.tokenURIExists(1);
-            assert.equal(tokenExistence, tokenExists, "The token does exists");
-         })
+        it("First token should exists", async () => {
+        const tokenExistence = await _contract.tokenURIExists(1);
+        assert.equal(tokenExistence, tokenExists, "The token does exists");
+        })
 
-         it("Should not be possible to createa n NFT with a previously used tokenURI", async () => {
-            try{
-                await _contract.mintToken(tokenURI, _nftPrice, {
-                    from: accounts[0]
-                })
-            } catch(error) {
-                assert(error, "NFT was minted with previously used tokenURI");
-            }
-         })
+        it("Should not be possible to createa n NFT with a previously used tokenURI", async () => {
+        try{
+            await _contract.mintToken(tokenURI, _nftPrice, {
+                from: accounts[0]
+            })
+        } catch(error) {
+            assert(error, "NFT was minted with previously used tokenURI");
+        }
+        })
 
          it("Should have one listed item", async () => {
             const listedItemCount = await _contract.listedItemCount();
@@ -57,5 +60,9 @@ contract("NftMarket", accounts => {
             assert.equal(nftItem.creator, accounts[0], "Creator is not account[0]");
             assert.equal(nftItem.isListed, true, "Token is not listed");
          })
+
+        //  it("Should cost x amount", async () => {
+        //     const listingPrice = await _contract.listingPrice();
+        //  })
     }) 
 })  

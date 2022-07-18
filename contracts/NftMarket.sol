@@ -31,8 +31,12 @@ contract NftMarket is ERC721URIStorage {
         bool isListed
     );
 
-    // @dev: _listedItems how many nfts are for sale on the market 
-    // @dev: _tokenIds: total items that have been created from the smart contract. 
+    // @dev: Set a listing price for minting the toke
+    // @dev: This price can be swapped later by an administrator
+    uint public listingPrice = 0.025 ether;
+
+    // @dev: _listedItems => how many nfts are for sale on the market 
+    // _tokenIds => the total items that have been created from the smart contract. 
     
     Counters.Counter private _listedItems;
     Counters.Counter private _tokenIds;
@@ -41,9 +45,14 @@ contract NftMarket is ERC721URIStorage {
 
     // mint token (NFT) - takes token uri and its price 
     function mintToken(string memory tokenURI, uint price) public payable returns (uint) {
+        
+        // @dev: require the token to exist
         require(!tokenURIExists(tokenURI), "Token URI already exists");
 
-       // increament token counter 
+        // @dev: the user must pay the listing price to mint an NFT
+        require(msg.value == listingPrice, "Message value must be equal to the listing price");
+        
+        // @dev: increment() is a helper
         _tokenIds.increment();
         _listedItems.increment();
         _usedTokenURIs[tokenURI] = true;
@@ -78,6 +87,7 @@ contract NftMarket is ERC721URIStorage {
         (NftItem memory) {
             return _idToNftItem[tokenId];
         }
+
     // @dev retrieve the amount of nfts generated at present time
     function listedItemCount() public view returns (uint) {
         return _listedItems.current();
