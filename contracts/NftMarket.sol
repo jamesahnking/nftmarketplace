@@ -42,6 +42,23 @@ contract NftMarket is ERC721URIStorage {
     Counters.Counter private _tokenIds;
      
     constructor() ERC721("FuzzAlinesNFT", "FZLN") {}
+    
+    //@dev get Nft Item 
+    function getNftItem(uint tokenId) public view returns 
+        (NftItem memory) {
+            return _idToNftItem[tokenId];
+        }
+
+    // @dev retrieve the amount of nfts generated at present time
+    function listedItemCount() public view returns (uint) {
+        return _listedItems.current();
+    }
+
+    // @dev: Verify token existence 
+    function tokenURIExists(string memory tokenURI) public view returns (bool) {
+        return _usedTokenURIs[tokenURI] == true;
+    }
+
 
     // mint token (NFT) - takes token uri and its price 
     function mintToken(string memory tokenURI, uint price) public payable returns (uint) {
@@ -68,6 +85,25 @@ contract NftMarket is ERC721URIStorage {
         return newTokenId;
     }
    
+
+    // @dev Purchase an NFT
+    function buyNFT(uint tokenId) public payable {
+        
+        uint price = _idToNftItem[tokenId].price;
+        address owner = ERC721.ownerOf(tokenId);
+       
+        require(msg.sender != owner, "You already own this NFT");
+        require(msg.value == price, "Submit the asking price of the NFT");
+
+        _idToNftItem[tokenId].isListed =false;
+        _listedItems.decrement();
+
+        _transfer(owner, msg.sender, tokenId);
+        payable(owner).transfer(msg.value);
+
+    }
+
+
     // @dev - Generate NFT Item 
     function _createNftItem( uint tokenId, uint price) private {
             require(price > 0, "Price must be at least one wei");
@@ -82,20 +118,5 @@ contract NftMarket is ERC721URIStorage {
             emit NftItemCreated(tokenId, price, msg.sender, true );
         }
 
-    //@dev get Nft Item 
-    function getNftItem(uint tokenId) public view returns 
-        (NftItem memory) {
-            return _idToNftItem[tokenId];
-        }
-
-    // @dev retrieve the amount of nfts generated at present time
-    function listedItemCount() public view returns (uint) {
-        return _listedItems.current();
-    }
-
-    // @dev: Verify token existence 
-    function tokenURIExists(string memory tokenURI) public view returns (bool) {
-        return _usedTokenURIs[tokenURI] == true;
-    }
 
 }
