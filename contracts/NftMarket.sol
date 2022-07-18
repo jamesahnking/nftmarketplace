@@ -86,8 +86,8 @@ contract NftMarket is ERC721URIStorage {
     }
    
 
-    // @dev Purchase an NFT
-    function buyNFT(uint tokenId) public payable {
+    // @dev Purchase an NFT from contract
+    function buyNft(uint tokenId) public payable {
         
         uint price = _idToNftItem[tokenId].price;
         address owner = ERC721.ownerOf(tokenId);

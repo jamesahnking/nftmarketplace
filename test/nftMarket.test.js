@@ -10,7 +10,7 @@ contract("NftMarket", accounts => {
     before(async() => {
         _contract = await NftMarket.deployed();
         })
-
+// Mint Token Function 
     describe("Mint token", () => {
         const tokenURI = "https://test.com";
         const tokenExists = false;
@@ -22,10 +22,10 @@ contract("NftMarket", accounts => {
             })
         })
 
-        it("First token owner should be address[0]", async () => {
-            const owner = await _contract.ownerOf(1);
-            assert.equal(owner, accounts[0], "Owner of token is not matching address [0]")
-         })
+    it("First token owner should be address[0]", async () => {
+        const owner = await _contract.ownerOf(1);
+        assert.equal(owner, accounts[0], "Owner of token is not matching address [0]")
+        })
 
         it("First token should point ot the correct tokenURI", async () => {
         const actualTokenURI = await _contract.tokenURI(1);
@@ -60,9 +60,30 @@ contract("NftMarket", accounts => {
             assert.equal(nftItem.creator, accounts[0], "Creator is not account[0]");
             assert.equal(nftItem.isListed, true, "Token is not listed");
          })
-
-        //  it("Should cost x amount", async () => {
-        //     const listingPrice = await _contract.listingPrice();
-        //  })
     }) 
+
+    // Buy Token Function 
+    describe("Buy NFT", () => {
+        before(async () => {
+            await _contract.buyNft(1, {
+                from: accounts[1],
+                value: _nftPrice
+            })
+        })
+
+        it("should unlist ther item", async () => {
+            const listedItem = await _contract.getNftItem(1);
+            assert.equal(listedItem.isListed, false, "Item is still listed");
+        })
+
+        it("should decrement the nft amount in listed Items", async () => {
+            const listedItemCount = await _contract.listedItemCount();
+            assert.equal(listedItemCount.toNumber(), 0, "Count has not been decremented");
+        })
+
+        it("should change owners", async () => {
+            const currentOwner = await _contract.ownerOf(1);
+            assert.equal(currentOwner, accounts[1], "Item still listed")
+        })
+    })
 })  
