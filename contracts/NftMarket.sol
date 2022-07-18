@@ -9,11 +9,22 @@ contract NftMarket is ERC721URIStorage {
     // @dev: For incrementing and decrementing 
     using Counters for Counters.Counter;
 
+    // @dev: This array Stores all nfts
+    uint256[] private _allNfts;
+
+    // @dev: Set a listing price for minting the toke
+    // @dev: This price can be swapped later by an administrator
+    uint public listingPrice = 0.025 ether;
+
+    // @dev: Ths array is an index of array 
+    mapping(uint => uint) private _idToNftIndex;
+
     // @dev: list of used tokenURIs - ( the links to Pinata JSON URIs)
     mapping(string => bool) private _usedTokenURIs;
     
     // @dev: NFT id mapping
     mapping(uint => NftItem) private _idToNftItem;
+
 
     // @dev: NFT item structure
     struct NftItem {
@@ -31,16 +42,23 @@ contract NftMarket is ERC721URIStorage {
         bool isListed
     );
 
-    // @dev: Set a listing price for minting the toke
-    // @dev: This price can be swapped later by an administrator
-    uint public listingPrice = 0.025 ether;
+    //@dev total supply of Nft's
+    function totalSupply() public view returns (uint) {
+        return _allNfts.length;
+    }
+
+    //@dev get a nft by index
+    function tokenByIndex(uint index) public view returns (uint){
+        require(index < totalSupply(), "Index out of bounds");
+        return _allNfts[index];
+    }
 
     // @dev: _listedItems => how many nfts are for sale on the market 
     // _tokenIds => the total items that have been created from the smart contract. 
     
     Counters.Counter private _listedItems;
     Counters.Counter private _tokenIds;
-     
+
     constructor() ERC721("FuzzAlinesNFT", "FZLN") {}
     
     //@dev get Nft Item 
@@ -85,7 +103,6 @@ contract NftMarket is ERC721URIStorage {
         return newTokenId;
     }
    
-
     // @dev Purchase an NFT from contract
     function buyNft(uint tokenId) public payable {
         
@@ -103,7 +120,6 @@ contract NftMarket is ERC721URIStorage {
 
     }
 
-
     // @dev - Generate NFT Item 
     function _createNftItem( uint tokenId, uint price) private {
             require(price > 0, "Price must be at least one wei");
@@ -117,6 +133,4 @@ contract NftMarket is ERC721URIStorage {
             
             emit NftItemCreated(tokenId, price, msg.sender, true );
         }
-
-
 }
