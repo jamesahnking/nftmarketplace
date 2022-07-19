@@ -97,12 +97,19 @@ contract("NftMarket", accounts => {
                 value: _listingPrice
             })
         })
+
         it("should have two NFTs created", async () => {
             const totalSupply = await _contract.totalSupply();
             assert(totalSupply.toNumber(), 2, "Total supply is not correct");
         })
 
+        it("should be able to retreive by index", async () => {
+            const nftId1 = await _contract.tokenByIndex(0);
+            const nftId2 = await _contract.tokenByIndex(1);
 
+            assert.equal(nftId1.toNumber(), 1, "NFt id is wrong ");
+            assert.equal(nftId2.toNumber(), 2, "NFt id is wrong ");
+        })
 
     })
 })  
