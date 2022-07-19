@@ -53,6 +53,34 @@ contract NftMarket is ERC721URIStorage {
         return _allNfts[index];
     }
 
+    function getAllNftsOnSale() public view returns (NftItem[] memory) {
+        // get total supply
+        uint allItemsCounts = totalSupply();
+        // start at #1 => 0 
+        uint currentIndex = 0;
+        // make items a storage container for NFts and their stuff
+        NftItem[] memory items = new NftItem[](_listedItems.current());
+
+        // loop through the total supply of of Nfts     
+        for (uint i = 0; i < allItemsCounts; i++) {
+            /// return the nfts according to id
+            uint tokenId = tokenByIndex(i);
+            // store the list of nfts inside of item 
+            NftItem storage item = _idToNftItem[tokenId];
+
+            // check each item listed if isListed is true = for sale 
+            // OR false = not for sale
+            if (item.isListed == true) {
+                // if so set the current index to the item thats true
+                items[currentIndex] = item;
+                // add that time/id to the list of isListed items to be returned
+                currentIndex += 1;
+            }
+        }
+        // return all items that are isListed as true 
+        return items;
+    }
+
     // @dev: _listedItems => how many nfts are for sale on the market 
     // _tokenIds => the total items that have been created from the smart contract. 
     
@@ -129,24 +157,26 @@ contract NftMarket is ERC721URIStorage {
                 price,
                 msg.sender,
                 true
-            );
+            );  
             
             emit NftItemCreated(tokenId, price, msg.sender, true );
         }
 
-    //@ dev before transfer check to make sure that the toen is from account 0
+    //@dev before transfer check to make sure that the toen is from account 0
     function _beforeTokenTransfer(  
         address from, 
         address to, 
         uint tokenId
     ) internal virtual override {
-        // @dev _beforeTokenTranfer is taken from the ERC721 spec 
+
+        // @dev _beforeTokenTranfer is taken from the ERC721 spec.
         super._beforeTokenTransfer(from, to, tokenId);
 
         if (from == address(0)) {
             _addTokenToAllTokensEnumeration(tokenId);
         }
     }
+
     //@dev add token to all Nfts
     function _addTokenToAllTokensEnumeration(uint tokenId) private {
         _idToNftIndex[tokenId] = _allNfts.length;
