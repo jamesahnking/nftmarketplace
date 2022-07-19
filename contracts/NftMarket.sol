@@ -133,4 +133,23 @@ contract NftMarket is ERC721URIStorage {
             
             emit NftItemCreated(tokenId, price, msg.sender, true );
         }
+
+    //@ dev before transfer check to make sure that the toen is from account 0
+    function _beforeTokenTransfer(  
+        address from, 
+        address to, 
+        uint tokenId
+    ) internal virtual override {
+        // @dev _beforeTokenTranfer is taken from the ERC721 spec 
+        super._beforeTokenTransfer(from, to, tokenId);
+
+        if (from == address(0)) {
+            _addTokenToAllTokensEnumeration(tokenId);
+        }
+    }
+    //@dev add token to all Nfts
+    function _addTokenToAllTokensEnumeration(uint tokenId) private {
+        _idToNftIndex[tokenId] = _allNfts.length;
+        _allNfts.push(tokenId);
+    }
 }

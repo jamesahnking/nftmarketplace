@@ -86,4 +86,23 @@ contract("NftMarket", accounts => {
             assert.equal(currentOwner, accounts[1], "Item still listed")
         })
     })
+
+
+    describe("Token Transfers", () => {
+
+        const tokenURI = "https://test-json-test.com"
+        before(async()=>{
+            await _contract.mintToken(tokenURI, _nftPrice,{
+                from: accounts[0],
+                value: _listingPrice
+            })
+        })
+        it("should have two NFTs created", async () => {
+            const totalSupply = await _contract.totalSupply();
+            assert(totalSupply.toNumber(), 2, "Total supply is not correct");
+        })
+
+
+
+    })
 })  
