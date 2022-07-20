@@ -6,27 +6,10 @@ import "@openzeppelin/contracts/utils/Counters.sol";
 
 contract NftMarket is ERC721URIStorage {
    
-    // @dev: For incrementing and decrementing 
+    // For incrementing and decrementing 
     using Counters for Counters.Counter;
 
-    // @dev: This array Stores all nfts
-    uint256[] private _allNfts;
-
-    // @dev: Set a listing price for minting the toke
-    // @dev: This price can be swapped later by an administrator
-    uint public listingPrice = 0.025 ether;
-
-    // @dev: Ths array is an index of array 
-    mapping(uint => uint) private _idToNftIndex;
-
-    // @dev: list of used tokenURIs - ( the links to Pinata JSON URIs)
-    mapping(string => bool) private _usedTokenURIs;
-    
-    // @dev: NFT id mapping
-    mapping(uint => NftItem) private _idToNftItem;
-
-
-    // @dev: NFT item structure
+    // NFT Object structure
     struct NftItem {
         uint tokenId;
         uint price;
@@ -34,7 +17,32 @@ contract NftMarket is ERC721URIStorage {
         bool isListed;
     }
     
-    // @ dev: outputs creation of NFT item 
+    // _listedItems - how many nfts are for sale on the market 
+    // _tokenIds - the total items that have been created from the smart contract. 
+    // @dev - counters are incrementer/decrementer helpers
+    Counters.Counter private _listedItems;
+    Counters.Counter private _tokenIds;
+
+    // Set a listing price for minting the token
+    // @dev: This price can be swapped later by an administrator
+    uint public listingPrice = 0.025 ether;
+    
+    // List of tokenURIs with true or false if used or not - ( the links to Pinata JSON URIs)
+    // Mapping: 
+    mapping(string => bool) private _usedTokenURIs;
+    // Mapping: Idex of NFTs => Inividual NftItem by tokenId Id 3,6,8,9
+    mapping(uint => uint) private _idToOwnedIndex;
+    // Mapping: OwnerAddress => Index => Nft Token id
+    mapping(address => mapping(uint => uint)) private _ownedTokens;
+    // Mapping index of to TokenIds
+    mapping(uint => uint) private _idToNftIndex;
+    // Mapping: NFT id mapped to NFTItem 
+    mapping(uint => NftItem) private _idToNftItem;
+
+    // Empty array to stores allNfts
+    uint256[] private _allNfts;
+
+    // NFT Creation event 
     event NftItemCreated (
         uint tokenId,
         uint price, 
@@ -42,85 +50,80 @@ contract NftMarket is ERC721URIStorage {
         bool isListed
     );
 
-    //@dev total supply of Nft's
+    // Total supply of Nft's in the marketplace
     function totalSupply() public view returns (uint) {
         return _allNfts.length;
     }
 
-    //@dev get a nft by index
+    // Get an Nft by index
     function tokenByIndex(uint index) public view returns (uint){
         require(index < totalSupply(), "Index out of bounds");
         return _allNfts[index];
     }
 
     function getAllNftsOnSale() public view returns (NftItem[] memory) {
-        // get total supply
+        // Get total supply
         uint allItemsCounts = totalSupply();
-        // start at #1 => 0 
+        // Start at #1 => 0 
         uint currentIndex = 0;
-        // make items a storage container for NFts and their stuff
+        // Make items a storage container for NFts and their stuff 
+        // @ dev this is an empty arrray .current() specifies the current amount in the array
         NftItem[] memory items = new NftItem[](_listedItems.current());
 
-        // loop through the total supply of of Nfts     
+        // Loop through the total supply of of Nfts     
         for (uint i = 0; i < allItemsCounts; i++) {
-            /// return the nfts according to id
+            // Return the nfts according to id
             uint tokenId = tokenByIndex(i);
-            // store the list of nfts inside of item 
+            // Store the NFT based on tokenId
             NftItem storage item = _idToNftItem[tokenId];
 
-            // check each item listed if isListed is true = for sale 
+            // Check each item listed if isListed is true = for sale 
             // OR false = not for sale
             if (item.isListed == true) {
-                // if so set the current index to the item thats true
+                // If so set the current index to the item thats true
                 items[currentIndex] = item;
-                // add that time/id to the list of isListed items to be returned
+                // Add that time/id to the list of isListed items to be returned
                 currentIndex += 1;
             }
         }
-        // return all items that are isListed as true 
+        // Return all items that are isListed as true 
         return items;
     }
 
-    // @dev: _listedItems => how many nfts are for sale on the market 
-    // _tokenIds => the total items that have been created from the smart contract. 
-    
-    Counters.Counter private _listedItems;
-    Counters.Counter private _tokenIds;
 
     constructor() ERC721("FuzzAlinesNFT", "FZLN") {}
     
-    //@dev get Nft Item 
+    // Get an Nft Item by id
     function getNftItem(uint tokenId) public view returns 
         (NftItem memory) {
             return _idToNftItem[tokenId];
         }
 
-    // @dev retrieve the amount of nfts generated at present time
+    // Retrieve the amount of nfts generated at present time
     function listedItemCount() public view returns (uint) {
         return _listedItems.current();
     }
 
-    // @dev: Verify token existence 
+    // Verify token existence 
     function tokenURIExists(string memory tokenURI) public view returns (bool) {
         return _usedTokenURIs[tokenURI] == true;
     }
 
 
-    // mint token (NFT) - takes token uri and its price 
+    // Mint token (NFT) - takes token uri and its price 
     function mintToken(string memory tokenURI, uint price) public payable returns (uint) {
         
-        // @dev: require the token to exist
+        // Token must be unique 
         require(!tokenURIExists(tokenURI), "Token URI already exists");
 
-        // @dev: the user must pay the listing price to mint an NFT
+        // User must pay the listing price to mint an NFT
         require(msg.value == listingPrice, "Message value must be equal to the listing price");
         
-        // @dev: increment() is a helper
         _tokenIds.increment();
         _listedItems.increment();
         _usedTokenURIs[tokenURI] = true;
 
-        // get the token id of the current nft
+        // Get the token id of the current nft
         uint newTokenId = _tokenIds.current();
 
         // Pass in inputs for minting and incrementing
@@ -172,8 +175,12 @@ contract NftMarket is ERC721URIStorage {
         // @dev _beforeTokenTranfer is taken from the ERC721 spec.
         super._beforeTokenTransfer(from, to, tokenId);
 
-        if (from == address(0)) {
+        if (from == address(0)) { 
             _addTokenToAllTokensEnumeration(tokenId);
+        }
+
+        if (to != from) {
+            _addTokenToOwnerEnumeration(to, tokenId);
         }
     }
 
@@ -181,5 +188,14 @@ contract NftMarket is ERC721URIStorage {
     function _addTokenToAllTokensEnumeration(uint tokenId) private {
         _idToNftIndex[tokenId] = _allNfts.length;
         _allNfts.push(tokenId);
+    }
+
+    //@dev add token to list of owners
+    function _addTokenToOwnerEnumeration(address to, uint tokenId) private {
+        // retrieve number of NFTs a user owns
+        uint length = ERC721.balanceOf(to);
+        //create mapping 
+        _ownedTokens[to][length] = tokenId; // addr => uint => uint
+        _idToOwnedIndex[tokenId] = length;  // uint => uint
     }
 }
