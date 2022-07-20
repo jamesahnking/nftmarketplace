@@ -61,6 +61,12 @@ contract NftMarket is ERC721URIStorage {
         return _allNfts[index];
     }
 
+    // Get the owner of the token by index
+    function tokenOfOwnerByIndex(address owner, uint index) public view returns (uint) {
+        require(index < ERC721.balanceOf(owner), "Index out of bounds");
+        return _ownedTokens[owner][index];
+    }
+
     function getAllNftsOnSale() public view returns (NftItem[] memory) {
         // Get total supply
         uint allItemsCounts = totalSupply();
@@ -90,6 +96,18 @@ contract NftMarket is ERC721URIStorage {
         return items;
     }
 
+    // Return Owneres NFTs by address and index
+    function getOwnedNfts() public view returns (NftItem[] memory) {
+        uint ownedItemsCount = ERC721.balanceOf(msg.sender);
+        NftItem[] memory items = new NftItem[](ownedItemsCount);
+
+        for (uint i = 0; i < ownedItemsCount; i++) {
+            uint tokenId = tokenOfOwnerByIndex(msg.sender, i);
+            NftItem storage item = _idToNftItem[tokenId];
+            items[i] = item;
+        }
+        return items;
+    }
 
     constructor() ERC721("FuzzAlinesNFT", "FZLN") {}
     
@@ -108,7 +126,6 @@ contract NftMarket is ERC721URIStorage {
     function tokenURIExists(string memory tokenURI) public view returns (bool) {
         return _usedTokenURIs[tokenURI] == true;
     }
-
 
     // Mint token (NFT) - takes token uri and its price 
     function mintToken(string memory tokenURI, uint price) public payable returns (uint) {
@@ -151,7 +168,7 @@ contract NftMarket is ERC721URIStorage {
 
     }
 
-    // @dev - Generate NFT Item 
+    // Generate an NFT Item 
     function _createNftItem( uint tokenId, uint price) private {
             require(price > 0, "Price must be at least one wei");
             
@@ -165,7 +182,7 @@ contract NftMarket is ERC721URIStorage {
             emit NftItemCreated(tokenId, price, msg.sender, true );
         }
 
-    //@dev before transfer check to make sure that the toen is from account 0
+    // Before a transfer check to make sure that the token is from account 0
     function _beforeTokenTransfer(  
         address from, 
         address to, 

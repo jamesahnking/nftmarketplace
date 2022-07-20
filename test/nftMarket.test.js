@@ -1,5 +1,6 @@
 // Test intended for use with with Truffle
 const NftMarket = artifacts.require("NftMarket");
+const { assert } = require("console");
 const { ethers } = require("ethers");
 
 contract("NftMarket", accounts => {
@@ -114,5 +115,9 @@ contract("NftMarket", accounts => {
             const allNfts = await _contract.getAllNftsOnSale();
             assert.equal(allNfts[0].tokenId, 2, "Nft has a wrong id");
         })
+
+        // it("account[1] should have one owned NFT", async () => {
+        //     const ownedNfts =
+        // })
     })
 })  
