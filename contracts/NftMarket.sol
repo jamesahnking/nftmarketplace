@@ -193,6 +193,8 @@ contract NftMarket is ERC721URIStorage {
 
         if (from == address(0)) { 
             _addTokenToAllTokensEnumeration(tokenId);
+        } else if (from != to) {
+            _removeTokenFromOwnerEnumeration(from, tokenId);
         }
 
         if (to != from) {
@@ -221,13 +223,12 @@ contract NftMarket is ERC721URIStorage {
         uint tokenIndex = _idToOwnedIndex[tokenId]; // current
 
         if (tokenIndex != lastTokenIndex) { // if it is the current id
-            uint lastTokenId = _ownedTokens[from][lastTokenIndex];// make the previous nft 
-
-            _ownedTokens[from][tokenIndex] = lastTokenId; // mapping 
-            _idToOwnedIndex[lastTokenId] = tokenIndex;  
+            uint lastTokenId = _ownedTokens[from][lastTokenIndex]; // last address and index
+            _ownedTokens[from][tokenIndex] = lastTokenId; // addr => uint => uint
+            _idToOwnedIndex[lastTokenId] = tokenIndex;  // uint => uint
         }
 
-        delete _idToOwnedIndex[tokenId];
-        delete _ownedTokens[from][lastTokenIndex];
+        delete _idToOwnedIndex[tokenId];// delete nft based on tokenId
+        delete _ownedTokens[from][lastTokenIndex]; // delete owner and index 
     }
 }
