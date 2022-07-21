@@ -150,7 +150,7 @@ contract NftMarket is ERC721URIStorage {
         return newTokenId;
     }
    
-    // @dev Purchase an NFT from contract
+    // Purchase an NFT from contract
     function buyNft(uint tokenId) public payable {
         
         uint price = _idToNftItem[tokenId].price;
@@ -188,7 +188,7 @@ contract NftMarket is ERC721URIStorage {
         uint tokenId
     ) internal virtual override {
 
-        // @dev _beforeTokenTranfer is taken from the ERC721 spec.
+        // _beforeTokenTranfer is taken from the ERC721 spec.
         super._beforeTokenTransfer(from, to, tokenId);
 
         if (from == address(0)) { 
@@ -200,18 +200,34 @@ contract NftMarket is ERC721URIStorage {
         }
     }
 
-    //@dev add token to all Nfts
+    // Add token to all Nfts
     function _addTokenToAllTokensEnumeration(uint tokenId) private {
         _idToNftIndex[tokenId] = _allNfts.length;
         _allNfts.push(tokenId);
     }
 
-    //@dev add token to list of owners
+    // Add token to list of owners
     function _addTokenToOwnerEnumeration(address to, uint tokenId) private {
-        // retrieve number of NFTs a user owns
+        // Retrieve number of NFTs a user owns
         uint length = ERC721.balanceOf(to);
-        //create mapping 
+        // Create mapping 
         _ownedTokens[to][length] = tokenId; // addr => uint => uint
         _idToOwnedIndex[tokenId] = length;  // uint => uint
+    }
+
+    // Remove tokens from list of owners 
+    function _removeTokenFromOwnerEnumeration(address from, uint tokenId) private {
+        uint lastTokenIndex= ERC721.balanceOf(from) -1; // previous
+        uint tokenIndex = _idToOwnedIndex[tokenId]; // current
+
+        if (tokenIndex != lastTokenIndex) { // if it is the current id
+            uint lastTokenId = _ownedTokens[from][lastTokenIndex];// make the previous nft 
+
+            _ownedTokens[from][tokenIndex] = lastTokenId; // mapping 
+            _idToOwnedIndex[lastTokenId] = tokenIndex;  
+        }
+
+        delete _idToOwnedIndex[tokenId];
+        delete _ownedTokens[from][lastTokenIndex];
     }
 }
