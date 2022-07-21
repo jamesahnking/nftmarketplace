@@ -17,20 +17,19 @@ contract NftMarket is ERC721URIStorage {
         bool isListed;
     }
     
-    // _listedItems - how many nfts are for sale on the market 
-    // _tokenIds - the total items that have been created from the smart contract. 
-    // @dev - counters are incrementer/decrementer helpers
+    // @dev: counters are incrementer/decrementer helpers
+    // @return: _listedItems - how many nfts are for sale on the market 
+    // @return: _tokenIds - the total items that have been created from the smart contract. 
     Counters.Counter private _listedItems;
     Counters.Counter private _tokenIds;
 
-    // Set a listing price for minting the token
+    // Price for creating and NFT 
     // @dev: This price can be swapped later by an administrator
     uint public listingPrice = 0.025 ether;
     
-    // List of tokenURIs with true or false if used or not - ( the links to Pinata JSON URIs)
-    // Mapping: 
+    // Mapping: indexId => true/false
     mapping(string => bool) private _usedTokenURIs;
-    // Mapping: Idex of NFTs => Inividual NftItem by tokenId Id 3,6,8,9
+    // Mapping: Index of NFTs => Inividual NftItem by tokenId Id 3,6,8,9
     mapping(uint => uint) private _idToOwnedIndex;
     // Mapping: OwnerAddress => Index => Nft Token id
     mapping(address => mapping(uint => uint)) private _ownedTokens;
