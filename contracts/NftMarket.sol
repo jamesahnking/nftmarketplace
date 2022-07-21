@@ -187,6 +187,7 @@ contract NftMarket is ERC721URIStorage {
         address to, 
         uint tokenId
     ) internal virtual override {
+        
         // _beforeTokenTranfer is from the ERC721.sol.
         super._beforeTokenTransfer(from, to, tokenId);
 
@@ -196,7 +197,9 @@ contract NftMarket is ERC721URIStorage {
             _removeTokenFromOwnerEnumeration(from, tokenId);
         }
 
-        if (to != from) {
+        if (to == address(0)) {
+            _removeTokenFromAllTokensEnumeration(tokenId);
+        } else if (to != from) {
             _addTokenToOwnerEnumeration(to, tokenId);
         }
     }
