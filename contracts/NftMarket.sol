@@ -29,7 +29,7 @@ contract NftMarket is ERC721URIStorage {
     
     // Mapping: indexId => true/false
     mapping(string => bool) private _usedTokenURIs;
-    // Mapping: Index of NFTs => Inividual NftItem by tokenId Id 3,6,8,9
+    // Mapping: Index of NFTs => Inividual NftItem by tokenId Id 3,6,8,
     mapping(uint => uint) private _idToOwnedIndex;
     // Mapping: OwnerAddress => Index => Nft Token id
     mapping(address => mapping(uint => uint)) private _ownedTokens;
@@ -181,14 +181,13 @@ contract NftMarket is ERC721URIStorage {
             emit NftItemCreated(tokenId, price, msg.sender, true );
         }
 
-    // Before a transfer check to make sure that the token is from account 0
+    // Before a transfer check to make sure that the token is from owner account[0]
     function _beforeTokenTransfer(  
         address from, 
         address to, 
         uint tokenId
     ) internal virtual override {
-
-        // _beforeTokenTranfer is taken from the ERC721 spec.
+        // _beforeTokenTranfer is from the ERC721.sol.
         super._beforeTokenTransfer(from, to, tokenId);
 
         if (from == address(0)) { 
@@ -212,23 +211,51 @@ contract NftMarket is ERC721URIStorage {
     function _addTokenToOwnerEnumeration(address to, uint tokenId) private {
         // Retrieve number of NFTs a user owns
         uint length = ERC721.balanceOf(to);
-        // Create mapping 
-        _ownedTokens[to][length] = tokenId; // addr => uint => uint
-        _idToOwnedIndex[tokenId] = length;  // uint => uint
+        // Map token to index and and owner 
+        _ownedTokens[to][length] = tokenId; // addr => uint(how many) => uint(specific token id)
+        _idToOwnedIndex[tokenId] = length;  // uint(how many) => uint(specific token id)
     }
 
-    // Remove tokens from list of owners 
-    function _removeTokenFromOwnerEnumeration(address from, uint tokenId) private {
-        uint lastTokenIndex= ERC721.balanceOf(from) -1; // previous
-        uint tokenIndex = _idToOwnedIndex[tokenId]; // current
+    // @dev 
+    // _ownedTokens MAPPING START
+    // 0x2C => 0 => 1
+    //         1 => 2
+    //         2 => 3
+    // -----------------------    
+    // _idToOwnedIndex MAPPING START
+    // ID   INDEX
+    // 1 => 0
+    // 2 => 1 
+    // 3 => 2
+        
+    // Remove tokens from list of owners
+    function _removeTokenFromOwnerEnumeration(address from, uint tokenId) private { 
 
-        if (tokenIndex != lastTokenIndex) { // if it is the current id
-            uint lastTokenId = _ownedTokens[from][lastTokenIndex]; // last address and index
-            _ownedTokens[from][tokenIndex] = lastTokenId; // addr => uint => uint
-            _idToOwnedIndex[lastTokenId] = tokenIndex;  // uint => uint
-        }
+        uint lastTokenIndex= ERC721.balanceOf(from) -1; // A. 2
+        uint tokenIndex = _idToOwnedIndex[tokenId]; // A. 1 
 
-        delete _idToOwnedIndex[tokenId];// delete nft based on tokenId
-        delete _ownedTokens[from][lastTokenIndex]; // delete owner and index 
+        if (tokenIndex != lastTokenIndex) { 
+            uint lastTokenId = _ownedTokens[from][lastTokenIndex]; // 3(id) => 2(last token index)
+
+        // Remapping _ownedTokens
+        // 3 is remapped to 2nd index 1:
+        // 0 => 1
+        // 1 => 3
+        
+        _ownedTokens[from][tokenIndex] = lastTokenId; 
+        
+        // Remapping _idToOwnedIndex
+        // 3 is remapped to 2nd index 1:
+        
+        // ID   INDEX
+        // 1 => 0
+        // 3 => 1
+
+        _idToOwnedIndex[lastTokenId] = tokenIndex;  // 1
+        }   
+        
+        // else delete token id 2 and 
+        delete _idToOwnedIndex[tokenId]; // delete id 2 
+        delete _ownedTokens[from][lastTokenIndex]; // delete lastTokenIndex => 2
     }
 }
