@@ -119,6 +119,7 @@ contract NftMarket is ERC721URIStorage, Ownable {
     }
 
 
+
     // Get an Nft Item by id
     function getNftItem(uint tokenId) public view returns 
         (NftItem memory) {
@@ -194,6 +195,19 @@ contract NftMarket is ERC721URIStorage, Ownable {
             
             emit NftItemCreated(tokenId, price, msg.sender, true );
         }
+
+
+    // Place NFT up for Sale
+    function placeNftOnSale(uint tokenId, uint newPrice) public payable  {
+        require(ERC721.ownerOf(tokenId) == msg.sender, "You are not owner of this nft"); //must be owner
+        require(_idToNftItem[tokenId].isListed == false, "Item is already on sale");
+        require(msg.value == listingPrice, "Price must be equal to listing price");
+
+            _idToNftItem[tokenId].isListed == true;
+            _idToNftItem[tokenId].price = newPrice;
+            _listedItems.increment();
+    }
+
 
     // Before a transfer check to make sure that the token is from owner account[0]
     function _beforeTokenTransfer(  
