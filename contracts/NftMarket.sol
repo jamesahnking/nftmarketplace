@@ -3,8 +3,9 @@ pragma solidity >=0.4.22 <0.9.0;
 
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
 
-contract NftMarket is ERC721URIStorage {
+contract NftMarket is ERC721URIStorage, Ownable {
    
     // For incrementing and decrementing 
     using Counters for Counters.Counter;
@@ -20,6 +21,7 @@ contract NftMarket is ERC721URIStorage {
     // @dev: counters are incrementer/decrementer helpers
     // @return: _listedItems - how many nfts are for sale on the market 
     // @return: _tokenIds - the total items that have been created from the smart contract. 
+
     Counters.Counter private _listedItems;
     Counters.Counter private _tokenIds;
 
@@ -110,6 +112,13 @@ contract NftMarket is ERC721URIStorage {
 
     constructor() ERC721("FuzzAlinesNFT", "FZLN") {}
     
+    // Set the listing price 
+    function setListingPrice(uint newPrice ) external onlyOwner {
+        require(newPrice > 0, "Price must be at least 1 wei");
+        listingPrice = newPrice;
+    }
+
+
     // Get an Nft Item by id
     function getNftItem(uint tokenId) public view returns 
         (NftItem memory) {
@@ -127,9 +136,9 @@ contract NftMarket is ERC721URIStorage {
     }
 
     // Remove token from 
-    function burnToken(uint tokenId) public {
-        _burn(tokenId);
-    }
+    // function burnToken(uint tokenId) public {
+    //     _burn(tokenId);
+    // }
 
     // Mint token (NFT) - takes token uri and its price 
     function mintToken(string memory tokenURI, uint price) public payable returns (uint) {
