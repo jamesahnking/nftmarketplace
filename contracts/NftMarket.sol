@@ -126,6 +126,11 @@ contract NftMarket is ERC721URIStorage {
         return _usedTokenURIs[tokenURI] == true;
     }
 
+    // Remove token from 
+    function burnToken(uint tokenId) public {
+        _burn(tokenId);
+    }
+
     // Mint token (NFT) - takes token uri and its price 
     function mintToken(string memory tokenURI, uint price) public payable returns (uint) {
         
@@ -187,7 +192,7 @@ contract NftMarket is ERC721URIStorage {
         address to, 
         uint tokenId
     ) internal virtual override {
-        
+
         // _beforeTokenTranfer is from the ERC721.sol.
         super._beforeTokenTransfer(from, to, tokenId);
 
@@ -264,8 +269,8 @@ contract NftMarket is ERC721URIStorage {
 
     function _removeTokenFromAllTokensEnumeration(uint tokenId) private {
         uint lastTokenIndex = _allNfts.length -1; 
-        uint tokenIndex = _idToNftIndex[tokenId]; // returns the index based on id 2
-        uint lastTokenId = _allNfts[lastTokenIndex];
+        uint tokenIndex = _idToNftIndex[tokenId]; 
+        uint lastTokenId = _allNfts[lastTokenIndex]; 
 
         _allNfts[tokenIndex] = lastTokenId;
         _idToNftIndex[lastTokenId] = tokenIndex;
@@ -274,3 +279,4 @@ contract NftMarket is ERC721URIStorage {
         _allNfts.pop();
     }
 }
+
