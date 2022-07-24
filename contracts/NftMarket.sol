@@ -21,7 +21,6 @@ contract NftMarket is ERC721URIStorage, Ownable {
     // @dev: counters are incrementer/decrementer helpers
     // @return: _listedItems - how many nfts are for sale on the market 
     // @return: _tokenIds - the total items that have been created from the smart contract. 
-
     Counters.Counter private _listedItems;
     Counters.Counter private _tokenIds;
 
@@ -113,11 +112,11 @@ contract NftMarket is ERC721URIStorage, Ownable {
     constructor() ERC721("FuzzAlinesNFT", "FZLN") {}
     
     // Set the listing price 
-    function setListingPrice(uint newPrice ) external onlyOwner {
+    function setListingPrice(uint newPrice ) external onlyOwner 
+    {
         require(newPrice > 0, "Price must be at least 1 wei");
         listingPrice = newPrice;
     }
-
 
 
     // Get an Nft Item by id
@@ -192,7 +191,6 @@ contract NftMarket is ERC721URIStorage, Ownable {
                 msg.sender,
                 true
             );  
-            
             emit NftItemCreated(tokenId, price, msg.sender, true );
         }
 
