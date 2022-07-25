@@ -1,6 +1,6 @@
 import { useHooks } from "@providers/web3";
 
-// Account Abstraction 
+// Export Account hook abstraction
 export const useAccount = () => {
     const hooks = useHooks(); // gets hooks 
     const swrRes = hooks.useAccount(); // gets the return data
@@ -10,7 +10,7 @@ export const useAccount = () => {
     }
 }
  
-// Network Abstraction
+// Export Network Connect hook abstraction
 export const useNetwork = () => {
     const hooks =  useHooks();
     const swrRes = hooks.useNetwork();
@@ -19,3 +19,15 @@ export const useNetwork = () => {
         network: swrRes
     }
 }
+
+// Export Listed Nfts hook abstraction
+export const useListedNfts = () => {
+    const hooks =  useHooks();
+    const swrRes = hooks.useListedNfts();
+
+    return {
+        nfts: swrRes
+    }
+}
+
+

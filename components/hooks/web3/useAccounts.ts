@@ -4,8 +4,8 @@ import { useEffect } from "react";
 import useSWR from "swr";
 
 // This file Responsible for the initialization of our useAccount Function
-// This will provide contract and ethereum provider to make the 
-// connection and get the account 
+// This will provide contract and ethereum provider to the application to make the 
+// connection to the network and get the account 
 
 // The name “SWR” is derived from stale-while-revalidate, 
 // SWR is a strategy to first return the data from cache (stale), then 
@@ -47,7 +47,7 @@ export const hookFactory: AccountHookFactory = ({provider, ethereum, isLoading})
              }
         );
        
-        // State for handling when accouts have changed 
+        // State for handling when accounts have changed 
         useEffect(() =>{ 
             // subscribe to listener
             ethereum?.on('accountsChanged', handleAccountsChanged);

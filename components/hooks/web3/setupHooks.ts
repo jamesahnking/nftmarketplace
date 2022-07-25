@@ -1,14 +1,17 @@
 import { Web3Dependencies } from "@_types/hooks";
 import {hookFactory as createAccountHook, UseAccountHook } from "./useAccounts";
 import {hookFactory as createNetworkHook, UseNetworkHook } from "./useNetwork";
+import {hookFactory as createListedNftsHook, UseListedNftsHook } from "./useListedNfts";
 
-// returns user account hooks 
+// @return: user account hooks 
 export type Web3Hooks = {
     useAccount: UseAccountHook;
     useNetwork: UseNetworkHook; 
+    useListedNfts: UseListedNftsHook;
 }
 
-// accepts dependency and returns web3hooks 
+// Accepts dependency
+// @return: web3hooks 
 export type SetupHooks = {
     (d: Web3Dependencies): Web3Hooks;
 }
@@ -20,6 +23,7 @@ export type SetupHooks = {
 export const setupHooks: SetupHooks = (deps) => {
     return {
         useAccount: createAccountHook(deps),
-        useNetwork: createNetworkHook(deps)
+        useNetwork: createNetworkHook(deps),
+        useListedNfts: createListedNftsHook(deps),
     }
 }
