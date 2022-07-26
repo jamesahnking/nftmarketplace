@@ -1,0 +1,35 @@
+{
+    "description": "Loving, violent, and extremely jealous.",
+    "image": "https://gateway.pinata.cloud/ipfs/QmP6tr4K5e9Fe3onwxC9gmHiQ743JUjQDBqWCupWZxmvJ5",
+    "name": "Fuurzl Pebo",
+    "attributes": [
+      {
+        "trait_type": "cuteness",
+        "value": "78"
+      },
+      {
+        "trait_type": "attack",
+        "value": "89"
+      },
+      {
+        "trait_type": "bite",
+        "value": "63"
+      },
+      {
+        "trait_type": "speed",
+        "value": "46"
+      },
+      {
+        "trait_type": "hunger",
+        "value": "30"
+      },
+      {
+        "trait_type": "jealousy",
+        "value": "90"
+      },
+      {
+        "trait_type": "thirst",
+        "value": "25"
+      }
+    ]
+  }

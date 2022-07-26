@@ -109,7 +109,7 @@ contract NftMarket is ERC721URIStorage, Ownable {
         return items;
     }
 
-    constructor() ERC721("FuzzAlinesNFT", "FZLN") {}
+    constructor() ERC721("FuurzlzNFT", "FRZL") {}
     
     // Set the listing price 
     function setListingPrice(uint newPrice ) external onlyOwner 
