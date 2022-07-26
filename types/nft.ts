@@ -1,16 +1,28 @@
 // Type of traits available
-export type Trait = "attack" | "health" | "speed"; 
+export type Trait = "cuteness" | "attack" | "bite" | "hunger" | "jealousy" | "thirst"; 
 
-// Descirption of trait and how much of the trait is posessed
+// Attribute Export
 export type NftAttribute = {
     trait_type: Trait;
     value: string;
 }
 
-// Each NFTs Meta Data packaged up along with traits and values 
+// Each NFTs Metadata Export
 export type NftMeta = {
     name: string;
     description: string;
     image: string; 
     attributes: NftAttribute[];
 }
+
+// NFT Object Export
+export type NftCore = {
+    tokenId: number;
+    price: number;
+    creator: string;
+    isListed: boolean
+}
+//Core and Meta Export
+export type Nft = {
+    meta: NftMeta 
+} & NftCore
