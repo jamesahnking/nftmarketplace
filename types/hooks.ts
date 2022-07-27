@@ -11,7 +11,6 @@ export type Web3Dependencies = {
     contract: NftMarketContract;
     ethereum: MetaMaskInpageProvider;
     isLoading: boolean;
-
 }
 
 // Type definition for the SWR handler and respons structure
