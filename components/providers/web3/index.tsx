@@ -47,13 +47,17 @@ const Web3Provider: FunctionComponent<Props> = ({children}) => {
           // Load Contract 
           const contract = await loadContract("NftMarket", provider);
           
+          // Expose web3 provider
+          const signer = provider.getSigner();
+          const signedContract = contract.connect(signer);
+
           setGlobalListeners(window.ethereum);
           
           // Initializing Metamask Wallet
           setWeb3Api(createWeb3State({
             ethereum: window.ethereum,
             provider, 
-            contract: contract as unknown as NftMarketContract, 
+            contract: signedContract as unknown as NftMarketContract, 
             isLoading: false
         }))
         } catch(e: any) {
