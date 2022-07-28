@@ -21,6 +21,7 @@ const NETWORK: {[k: string]: string} = {
     5: "Goerli Testnet",
     56: "Binance Smart Chain",
     1337: "Ganache",
+    5777: "Ganache"
 }
 
 const targetId = process.env.NEXT_PUBLIC_TARGET_CHAIN_ID as string;
