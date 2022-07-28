@@ -27,6 +27,6 @@ export const setupHooks: SetupHooks = (deps) => {
         useAccount: createAccountHook(deps),
         useNetwork: createNetworkHook(deps),
         useListedNfts: createListedNftsHook(deps),
-        useOwnedNfts: createOwnedNftsHook(deps),
+        useOwnedNfts: createOwnedNftsHook(deps)
     }
 }
