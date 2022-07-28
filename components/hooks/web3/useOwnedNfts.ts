@@ -3,7 +3,7 @@ import { Nft } from "@_types/nft";
 import { ethers } from "ethers";
 import useSWR from "swr";
 
-// UseLIstedNftsHook provides list of nfts to the application via we3 from the chain.
+// UseOwnedNftHook provides list of nfts to the application via we3 from the chain.
 
 type UseOwnedNftsResponse = {}
 type OwnedNftsHookFactory = CryptoHookFactory<Nft[], UseOwnedNftsResponse>

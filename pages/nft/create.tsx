@@ -6,7 +6,7 @@ import { BaseLayout } from '@ui'
 import { Switch } from '@headlessui/react'
 import Link from 'next/link'
 
-const ATTRIBUTES = ["health", "attack", "speed"]
+const ATTRIBUTES = ["cuteness", "attack", "bite","hunger" , "jealousy" , "thirst"]
 
 
 const NftCreate: NextPage = () => {
