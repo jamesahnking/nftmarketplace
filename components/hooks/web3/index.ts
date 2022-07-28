@@ -29,5 +29,16 @@ export const useListedNfts = () => {
         nfts: swrRes
     }
 }
+// Export Listed Owned Nfts hook abstraction 
+
+export const useOwnedNfts = () => {
+    const hooks =  useHooks();
+    const swrRes = hooks.useOwnedNfts();
+
+    return {
+        nfts: swrRes
+    }
+}
+
 
 
