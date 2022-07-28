@@ -3,8 +3,8 @@
 import type { NextPage } from 'next'
 import { BaseLayout } from '../components/ui'
 import { Nft } from '@_types/nft';
-import { useOwnedNfts } from '@hooks/web3';
 import { useEffect, useState } from 'react';
+import { useOwnedNfts } from '@hooks/web3';
 
 const tabs = [
   { name: 'Your Collection', href: '#', current: true },
