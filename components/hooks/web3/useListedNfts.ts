@@ -5,7 +5,10 @@ import useSWR from "swr";
 
 // UseLIstedNftsHook provides list of nfts to the application via we3 from the chain.
 
-type UseListedNftsResponse = {}
+type UseListedNftsResponse = { 
+  buyNft: (token: number, value: number) => Promise<void>
+}
+
 type ListedNftsHookFactory = CryptoHookFactory<Nft[], UseListedNftsResponse>
 
 export type UseListedNftsHook = ReturnType<ListedNftsHookFactory>
@@ -34,10 +37,25 @@ export const hookFactory: ListedNftsHookFactory = ({contract}) => () => {
           }
           debugger
           return nfts; //return list of nfts
-        }
+          }
         )
+        // BUY NFT
+        const buyNft = async (tokenId: number, value: number) => { 
+          try{  
+            await contract?.buyNft(
+              tokenId, {
+                value: ethers.utils.parseEther(value.toString())
+              }
+            )
+            alert(" You have purchased an NFT. See your profile page")
+          } catch(e: any) {
+            console.error(e.message);
+          }
+        }
+
         return {
           ...swr,
+          buyNft,
           data: data || [],
         };
     } 
