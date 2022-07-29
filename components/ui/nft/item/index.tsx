@@ -6,11 +6,11 @@ import { NftMeta, Nft } from "../../../../types/nft"
 
 type NftItemProps = {
   item: Nft;
+  buyNft: (token: number, value: number) => Promise<void>;
 }
 
 // NFT Item Component
-
-const NftItem: FunctionComponent<NftItemProps> = ({ item }) => {
+const NftItem: FunctionComponent<NftItemProps> = ({ item, buyNft }) => {
   
     return (
         <>
