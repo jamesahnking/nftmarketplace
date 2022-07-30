@@ -15,7 +15,7 @@ export const hookFactory: OwnedNftsHookFactory = ({contract}) => () => {
         contract ? "web3/useOwnedNfts" : null,
         async () => {
           const nfts = [] as Nft[]; // create container for nfts 
-          const coreNfts = await contract!.getAllNftsOnSale(); // get all the nfts on sale  
+          const coreNfts = await contract!.getOwnedNfts(); // get all the nfts on sale  
 
           // loop through list of Nfts
           for(let i = 0; i < coreNfts.length; i++) {
