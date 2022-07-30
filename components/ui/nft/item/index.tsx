@@ -1,16 +1,16 @@
 /* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable @next/next/no-img-element */
 
-import { FunctionComponent } from "react"
-import { NftMeta, Nft } from "../../../../types/nft"
-
+import { FunctionComponent } from "react";
+import { NftMeta, Nft } from "../../../../types/nft";
+ 
 type NftItemProps = {
   item: Nft;
   buyNft: (token: number, value: number) => Promise<void>;
 }
 
 // NFT Item Component
-const NftItem: FunctionComponent<NftItemProps> = ({ item, buyNft }) => {
+const NftItem: FunctionComponent<NftItemProps> = ({item,buyNft}) => {
   
     return (
         <>

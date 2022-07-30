@@ -26,12 +26,7 @@ const Home: NextPage = () => {
               Mint a Fuurzl and trade with your friends!
             </p>
           </div>
-
-        <NftList 
-        // casting as NftMeta
-          nfts={nfts.data as Nft[] }
-        />
-
+        <NftList />
         </div>
       </div>
     </BaseLayout>
