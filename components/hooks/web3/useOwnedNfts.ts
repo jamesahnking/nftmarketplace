@@ -45,7 +45,7 @@ export const hookFactory: OwnedNftsHookFactory = ({contract}) => () => {
             tokenId, 
             ethers.utils.parseEther(price.toString()),
             {
-             value: ethers.utils.parseEther(0.025.toString()),
+             value: ethers.utils.parseEther(0.025.toString())
             }
           ) 
 

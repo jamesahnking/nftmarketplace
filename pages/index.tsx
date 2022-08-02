@@ -1,12 +1,11 @@
 import type { NextPage } from 'next';
 import { BaseLayout, NftList } from '@ui';
-import { Nft } from '@_types/nft';
 import { useListedNfts } from '@hooks/web3';
 
 // @dev - This is your applications homepage 
 const Home: NextPage = () => {
-  const { nfts } = useListedNfts();
-  console.log(nfts.data);
+
+  console.log(`Length Of List: ${NftList.length}`);
 
   // Load Web3 provider and contract
   // const { provider, contract } = useWeb3();
