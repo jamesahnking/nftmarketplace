@@ -22,8 +22,8 @@ export const hookFactory: ListedNftsHookFactory = ({contract}) => () => {
 
           // loop through list of Nfts
           for(let i = 0; i < coreNfts.length; i++) {
-            const item = coreNfts[i];
-            const tokenURI = await contract!.tokenURI(item.tokenId);
+            const item = coreNfts[i]; // extract items individ
+            const tokenURI = await contract!.tokenURI(item.tokenId); //fetch URI
             const metaRes = await fetch(tokenURI); // fetch pinata link
             const meta = await metaRes.json(); // fetch json
 
@@ -35,20 +35,22 @@ export const hookFactory: ListedNftsHookFactory = ({contract}) => () => {
                 meta
             })
           }
+          debugger
           return nfts; //return list of nfts
           }
         )
+        
         // BUY NFT
-        const buyNft = async (tokenId: number, value: number) => { 
-          try{  
+        const buyNft = async (tokenId: number, value: number) => {
+          try {
             const result = await contract?.buyNft(
               tokenId, {
                 value: ethers.utils.parseEther(value.toString())
               }
             )
-            await result?.wait();  
-            alert(" You have purchased an NFT. See your profile page")
-          } catch(e: any) {
+            await result?.wait();
+            alert("You have bought Nft. See profile page.")
+          } catch (e: any) {
             console.error(e.message);
           }
         }

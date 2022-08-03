@@ -33057,12 +33057,12 @@
         }
       },
       "links": {},
-      "address": "0x8F49091A341577E40f7742B1D90A5fdCB51fb27e",
-      "transactionHash": "0xe5871a2d16641fe9960ca7df32406685f364d8151d764ff8cc8d0f67a4cae147"
+      "address": "0xbD19cDB22dB3A206608fCAF1929F7182F7112Bd8",
+      "transactionHash": "0x9bba970582ea52939926593a54bb6e640a089596663d604b8728433cb87bb831"
     }
   },
   "schemaVersion": "3.4.7",
-  "updatedAt": "2022-07-28T18:30:02.559Z",
+  "updatedAt": "2022-08-02T22:52:28.961Z",
   "networkType": "ethereum",
   "devdoc": {
     "kind": "dev",

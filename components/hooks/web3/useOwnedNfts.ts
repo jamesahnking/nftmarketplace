@@ -50,9 +50,10 @@ export const hookFactory: OwnedNftsHookFactory = ({contract}) => () => {
           ) 
 
           await result?.wait(); // check if the nft is already listed
+            
           alert("Item has been listed");      
           } catch(e:any){
-            console.error(e.message);
+            console.error(`This is the NFT List error ${e.message}`);
           }  
          }
 

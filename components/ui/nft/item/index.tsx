@@ -10,7 +10,7 @@ type NftItemProps = {
 }
 
 // NFT Item Component
-const NftItem: FunctionComponent<NftItemProps> = ({item,buyNft}) => {
+const NftItem: FunctionComponent<NftItemProps> = ({item, buyNft}) => {
   
     return (
         <>
