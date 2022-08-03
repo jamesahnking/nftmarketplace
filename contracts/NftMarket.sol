@@ -145,13 +145,11 @@ contract NftMarket is ERC721URIStorage, Ownable {
         
         // Token must be unique 
         require(!tokenURIExists(tokenURI), "Token URI already exists");
-
         // User must pay the listing price to mint an NFT
         require(msg.value == listingPrice, "Message value must be equal to the listing price");
         
         _tokenIds.increment();
         _listedItems.increment();
-        _usedTokenURIs[tokenURI] = true;
 
         // Get the token id of the current nft
         uint newTokenId = _tokenIds.current();
@@ -160,6 +158,7 @@ contract NftMarket is ERC721URIStorage, Ownable {
         _safeMint(msg.sender, newTokenId); // mint token from this address
         _setTokenURI(newTokenId, tokenURI); // attach token URI to id
         _createNftItem(newTokenId, price); // attach price and generate token
+        _usedTokenURIs[tokenURI] = true;
 
         return newTokenId;
     }

@@ -34,6 +34,7 @@ export const hookFactory: OwnedNftsHookFactory = ({contract}) => () => {
                 meta
             })
           }
+          debugger
           return nfts; //return list of nfts
          }
         )
