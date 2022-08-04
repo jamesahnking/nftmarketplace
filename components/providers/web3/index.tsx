@@ -6,14 +6,11 @@ import { NftMarketContract } from "@_types/nftMarketContract";
 
 
 // Reloads the browser
-function pageReload() {
-  window.location.reload();
-}
+const pageReload = () => { window.location.reload(); }
 
 const handleAccount = (ethereum: MetaMaskInpageProvider ) => async () => {
   const isLocked = !(await ethereum._metamask.isUnlocked());
-  // if not unlocked reload page
-  if (isLocked) { pageReload(); }
+  if (isLocked) { pageReload(); }  // if not unlocked reload page
 }
 
 // Universal load and reload
@@ -25,18 +22,17 @@ const setGlobalListeners = (ethereum: MetaMaskInpageProvider) => {
 const removeGlobalListeners = (ethereum: MetaMaskInpageProvider) => { 
   ethereum?.removeListener("chainChanged", pageReload);
   ethereum?.removeListener("accountsChanged", handleAccount(ethereum));
-
 }
 
 // The web3 provider will wrap all components in _app.tsx
 const Web3Context = createContext<Web3State>(createDefaultState());
 
 interface Props {
-    children: React.ReactNode;
+  children: React.ReactNode;
 }
 
-const Web3Provider: FunctionComponent<Props> = ({children}) => {
-  const [web3Api, setWeb3Api] = useState<Web3State>(createDefaultState())
+const Web3Provider: FunctionComponent<Props>= ({children}) => {
+  const [web3Api, setWeb3Api] = useState<Web3State>(createDefaultState());
 
   // @dev MetaMask injects a global API into websites visited by its users at window.ethereum 
   useEffect(() => {
@@ -52,7 +48,6 @@ const Web3Provider: FunctionComponent<Props> = ({children}) => {
           const signedContract = contract.connect(signer);
 
           setGlobalListeners(window.ethereum);
-          
           // Initializing Metamask Wallet
           setWeb3Api(createWeb3State({
             ethereum: window.ethereum,
@@ -61,7 +56,7 @@ const Web3Provider: FunctionComponent<Props> = ({children}) => {
             isLoading: false
         }))
         } catch(e: any) {
-          console.error(e.message);
+          console.error("Install a web3 wallet");
           // => callback if theres no wallet installed 
           setWeb3Api((api) => createWeb3State({
             ...api as any,

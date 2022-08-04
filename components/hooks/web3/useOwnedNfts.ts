@@ -1,7 +1,9 @@
 import { CryptoHookFactory } from "@_types/hooks";
 import { Nft } from "@_types/nft";
 import { ethers } from "ethers";
+import { useCallback } from "react";
 import useSWR from "swr";
+
 
 // UseOwnedNftHook provides list of nfts to the application via we3 from the chain.
 
@@ -34,29 +36,30 @@ export const hookFactory: OwnedNftsHookFactory = ({contract}) => () => {
                 meta
             })
           }
-          debugger
           return nfts; //return list of nfts
          }
         )
       
         // List Nfts
-        const listNft = async (tokenId: number, price: number) => {
+        const _contract = contract;
+        const listNft = useCallback(async (tokenId: number, value: number) => {
+          
           try{ 
-          const result = await contract?.placeNftOnSale( 
+          const result = await _contract!.placeNftOnSale( 
             tokenId, 
-            ethers.utils.parseEther(price.toString()),
+            ethers.utils.parseEther(value.toString()),
             {
              value: ethers.utils.parseEther(0.025.toString())
             }
           ) 
-
           await result?.wait(); // check if the nft is already listed
-            
-          alert("Item has been listed");      
+          alert("Item has been listed");    
+
           } catch(e:any){
-            console.error(`This is the NFT List error ${e.message}`);
+            console.error(e.message);
           }  
-         }
+          // eslint-disable-next-line react-hooks/exhaustive-deps
+        }, [_contract]) 
 
         return {
           ...swr,

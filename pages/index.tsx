@@ -4,9 +4,6 @@ import { useListedNfts } from '@hooks/web3';
 
 // @dev - This is your applications homepage 
 const Home: NextPage = () => {
-
-  console.log(`Length Of List: ${NftList.length}`);
-
   // Load Web3 provider and contract
   // const { provider, contract } = useWeb3();
 

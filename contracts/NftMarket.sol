@@ -50,6 +50,8 @@ contract NftMarket is ERC721URIStorage, Ownable {
         bool isListed
     );
 
+    constructor() ERC721("FuurzlzNFT", "FRZL") {}
+    
     // Total supply of Nft's in the marketplace
     function totalSupply() public view returns (uint) {
         return _allNfts.length;
@@ -109,7 +111,6 @@ contract NftMarket is ERC721URIStorage, Ownable {
         return items;
     }
 
-    constructor() ERC721("FuurzlzNFT", "FRZL") {}
     
     // Set the listing price 
     function setListingPrice(uint newPrice ) external onlyOwner 
