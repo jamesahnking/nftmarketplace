@@ -45,11 +45,11 @@ export const hookFactory: OwnedNftsHookFactory = ({contract}) => () => {
         const listNft = useCallback(async (tokenId: number, value: number) => {
           
           try{ 
-          const result = await _contract!.placeNftOnSale( 
-            tokenId, 
-            ethers.utils.parseEther(value.toString()),
-            {
-             value: ethers.utils.parseEther(0.025.toString())
+            const result = await _contract!.placeNftOnSale( 
+              tokenId, 
+              ethers.utils.parseEther(value.toString()),
+              {
+              value: ethers.utils.parseEther(0.025.toString())
             }
           ) 
           await result?.wait(); // check if the nft is already listed
