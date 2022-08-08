@@ -1,7 +1,9 @@
 import { CryptoHookFactory } from "@_types/hooks";
 import { Nft } from "@_types/nft";
 import { ethers } from "ethers";
+import { useCallback } from "react";
 import useSWR from "swr";
+
 
 // UseLIstedNftsHook provides list of nfts to the application via we3 from the chain.
 
@@ -14,51 +16,53 @@ type ListedNftsHookFactory = CryptoHookFactory<Nft[], UseListedNftsResponse>
 export type UseListedNftsHook = ReturnType<ListedNftsHookFactory>
 
 export const hookFactory: ListedNftsHookFactory = ({contract}) => () => {
-    const {data, ...swr} = useSWR(
-        contract ? "web3/useListedNfts" : null,
-        async () => {
-          const nfts = [] as Nft[]; // create container for nfts 
-          const coreNfts = await contract!.getAllNftsOnSale(); // get all the nfts on sale  
+const {data, ...swr} = useSWR(
+    contract ? "web3/useListedNfts" : null,
+    async () => {
+      const nfts = [] as Nft[];
+      const coreNfts = await contract!.getAllNftsOnSale();
 
-          // loop through list of Nfts
-          for(let i = 0; i < coreNfts.length; i++) {
-            const item = coreNfts[i]; // extract items individ
-            const tokenURI = await contract!.tokenURI(item.tokenId); //fetch URI
-            const metaRes = await fetch(tokenURI); // fetch pinata link
-            const meta = await metaRes.json(); // fetch json
+      // loop through list of Nfts
+      for(let i = 0; i < coreNfts.length; i++) {
+        const item = coreNfts[i]; // extract items individ
+        const tokenURI = await contract!.tokenURI(item.tokenId); //fetch URI
+        const metaRes = await fetch(tokenURI); // fetch pinata link
+        const meta = await metaRes.json(); // fetch json
 
-            nfts.push({ // add object to list
-                price: parseFloat(ethers.utils.formatEther(item.price)),
-                tokenId: item.tokenId.toNumber(),
-                creator: item.creator,
-                isListed: item.isListed,
-                meta
-            })
-          }
-   
+        nfts.push({ // add object to list
+            price: parseFloat(ethers.utils.formatEther(item.price)),
+            tokenId: item.tokenId.toNumber(),
+            creator: item.creator,
+            isListed: item.isListed,
+            meta
+        })
+      }
           // debugger
           return nfts; //return list of nfts
           }
-        )
-        
+        )    
+    
         // BUY NFT
-        const buyNft = async (tokenId: number, value: number) => {
-          try {
-            const result = await contract?.buyNft(
-              tokenId, {
-                value: ethers.utils.parseEther(value.toString())
-              }
-            )
-            await result?.wait();
-            alert("You have bought Nft. See profile page.")
-          } catch (e: any) {
-            console.error(e.message);
+    const _contract = contract;
+    const buyNft = useCallback (async (tokenId: number, value: number) => {
+      
+      try {
+        const result = await _contract!.buyNft(
+          tokenId, {
+            value: ethers.utils.parseEther(value.toString())
           }
-        }
+        )
+        await result?.wait();
+        alert("You have bought Nft. See profile page.")
+      
+      } catch (e: any) {
+        console.error(e.message);
+      }
+    }, [_contract]) 
 
-        return {
-          ...swr,
-          buyNft,
-          data: data || [],
-        };
-    } 
+    return {
+      ...swr,
+      buyNft,
+      data: data || [],
+    };
+} 

@@ -50,6 +50,8 @@ contract NftMarket is ERC721URIStorage, Ownable {
         bool isListed
     );
 
+    constructor() ERC721("FuurzlzNFT", "FRZL") {}
+    
     // Total supply of Nft's in the marketplace
     function totalSupply() public view returns (uint) {
         return _allNfts.length;
@@ -109,7 +111,6 @@ contract NftMarket is ERC721URIStorage, Ownable {
         return items;
     }
 
-    constructor() ERC721("FuurzlzNFT", "FRZL") {}
     
     // Set the listing price 
     function setListingPrice(uint newPrice ) external onlyOwner 
@@ -172,7 +173,7 @@ contract NftMarket is ERC721URIStorage, Ownable {
         require(msg.sender != owner, "You already own this NFT");
         require(msg.value == price, "Submit the asking price of the NFT");
 
-        _idToNftItem[tokenId].isListed =false;
+        _idToNftItem[tokenId].isListed = false;
         _listedItems.decrement();
 
         _transfer(owner, msg.sender, tokenId);
@@ -200,7 +201,7 @@ contract NftMarket is ERC721URIStorage, Ownable {
         require(_idToNftItem[tokenId].isListed == false, "Item is already on sale");
         require(msg.value == listingPrice, "Price must be equal to listing price");
 
-            _idToNftItem[tokenId].isListed == true;
+            _idToNftItem[tokenId].isListed = true;
             _idToNftItem[tokenId].price = newPrice;
             _listedItems.increment();
     }

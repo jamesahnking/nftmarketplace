@@ -7,12 +7,13 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "genContractType": "abi-types-generator './public/contracts/NftMarket.json' --output='./types' --name=nftMarketContract --provider=ethers_v5"  },
+    "genContractType": "abi-types-generator './public/contracts/NftMarket.json' --output='./types' --name=nftMarketContract --provider=ethers_v5"
+  },
   "dependencies": {
     "@headlessui/react": "^1.6.4",
     "@heroicons/react": "^1.0.6",
     "@metamask/providers": "^9.0.0",
-    "@openzeppelin/contracts": "^4.6.0",
+    "@openzeppelin/contracts": "^4.7.2",
     "@tailwindcss/forms": "^0.5.2",
     "dotenv": "^16.0.1",
     "ethers": "^5.6.8",
