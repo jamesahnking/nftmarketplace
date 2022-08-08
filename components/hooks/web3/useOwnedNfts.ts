@@ -58,7 +58,6 @@ export const hookFactory: OwnedNftsHookFactory = ({contract}) => () => {
           } catch(e:any){
             console.error(e.message);
           }  
-          // eslint-disable-next-line react-hooks/exhaustive-deps
         }, [_contract]) 
 
         return {
