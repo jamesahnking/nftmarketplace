@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 
 import type { NextPage } from 'next'
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, useState } from 'react'
 import { BaseLayout } from '@ui'
 import { Switch } from '@headlessui/react'
 import Link from 'next/link'
@@ -29,20 +29,32 @@ const NftCreate: NextPage = () => {
       ]
     });
 
-    // Change event
+    // Change change event handling 
     const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
     {
+      // Get the value from the target 
       const { name, value } = e.target;
+      // Set state
       setNftMeta({...nftMeta, [name]: value});
+    }
+
+    // Attribute change event handling
+    const handleAttributeChange = (e: ChangeEvent<HTMLInputElement>) => 
+    {
+      const {name, value } = e.target;
+      const attributeIdx = nftMeta.attributes.findIndex(attr => attr.trait_type === name);
+      nftMeta.attributes[attributeIdx].value = value;
+      setNftMeta({
+        ...nftMeta,
+        attributes: nftMeta.attributes
+      })
     }
 
     const createNft = () => {
       console.log(nftMeta);
     }
   
-  
     return (
-   
      <BaseLayout>
         <div>
         <div className="py-4">
@@ -148,6 +160,7 @@ const NftCreate: NextPage = () => {
               </p>
             </div>
           </div>
+{/* Right Col Form starts here  */}
           <div className="mt-5 md:mt-0 md:col-span-2">
             <form>
               <div className="shadow sm:rounded-md sm:overflow-hidden">
@@ -235,7 +248,7 @@ const NftCreate: NextPage = () => {
                           {attribute.trait_type}
                         </label>
                         <input
-                          onChange={() => {}}
+                          onChange={handleAttributeChange}
                           value={attribute.value}
                           type="text"
                           name={attribute.trait_type}
