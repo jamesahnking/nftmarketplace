@@ -6,6 +6,8 @@ import { BaseLayout } from '@ui'
 import { Switch } from '@headlessui/react'
 import Link from 'next/link'
 import { NftMeta } from '@_types/nft'
+import axios from 'axios'
+
 
 const ATTRIBUTES = ["cuteness", "attack", "bite","hunger" , "jealousy" , "thirst"]
 
@@ -50,8 +52,13 @@ const NftCreate: NextPage = () => {
       })
     }
 
-    const createNft = () => {
-      console.log(nftMeta);
+    //Create NFT Session GET Message 
+    const createNft = async () => {
+      try{
+        const messageToSign = await axios.get("/api/verify");
+      } catch (e: any) {
+        console.error(e.message);
+      }
     }
   
     return (
@@ -181,6 +188,8 @@ const NftCreate: NextPage = () => {
                       />
                     </div>
                   </div>
+                  {/* Description  */}
+
                   <div>
                     <label htmlFor="description" className="block text-sm font-medium text-gray-700">
                       Description
@@ -200,7 +209,7 @@ const NftCreate: NextPage = () => {
                       Brief description of NFT
                     </p>
                   </div>
-                  {/* Has Image? */}
+                  {/* Upload Image */}
                   { false ?
                     <img src="https://eincode.mypinata.cloud/ipfs/QmaQYCrX9Fg2kGijqapTYgpMXV7QPPzMwGrSRfV9TvTsfM/Creature_1.png" alt="" className="h-40" /> :
                     <div>
@@ -241,6 +250,7 @@ const NftCreate: NextPage = () => {
                     </div>
                   </div>
                   }
+                  {/* Trait Type List */}
                   <div className="grid grid-cols-6 gap-6">
                     { nftMeta.attributes.map(attribute =>
                       <div key={attribute.trait_type} className="col-span-6 sm:col-span-6 lg:col-span-2">

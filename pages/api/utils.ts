@@ -1,4 +1,4 @@
-import { withIronSessionApiRoute } from "iron-session/next";
+import { withIronSession } from "next-iron-session";
 import contract from "../../public/contracts/NftMarket.json";
 
 const NETWORKS = {
@@ -13,7 +13,7 @@ export const contractAddress = contract["networks"][targetNetwork]["address"];
 
 // set session // save to cookies to browser
 export function withSession(handler: any) {
-    return withIronSessionApiRoute (handler, {
+    return withIronSession (handler, {
         password: process.env.SECRET_COOKIE_PASSWORD as string, 
         cookieName: "nft-auth-session",
         cookieOptions: {
