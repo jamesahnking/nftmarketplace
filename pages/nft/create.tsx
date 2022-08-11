@@ -8,9 +8,7 @@ import { NftMeta } from '@_types/nft';
 import axios from 'axios';
 import { useWeb3 } from '@providers/web3';
 
-
 const ATTRIBUTES = ["cuteness", "attack", "bite","hunger" , "jealousy" , "thirst"]
-
 
 const NftCreate: NextPage = () => {
     const {ethereum} = useWeb3();
