@@ -52,20 +52,27 @@ const NftCreate: NextPage = () => {
       })
     }
 
-    //Create NFT Session GET Message 
+    //Create NFT Session GET/POST
     const createNft = async () => {
       
       try{
         const messageToSign = await axios.get("/api/verify");
         const accounts = await ethereum?.request({method: "eth_requestAccounts"}) as string[];
         const account = accounts[0];
+       
         // sign the message
         const signedData = await ethereum?.request({
           method: "personal_sign",
           params: [JSON.stringify(messageToSign.data), account, messageToSign.data.id]
         })
+
+        await axios.post("/api/verify", {
+          address: account, 
+          signatures: signedData, 
+          nft: nftMeta
+        })
+
         console.log(signedData);
-        // console.log(messageToSign.data);
       } catch (e: any) {
         console.error(e.message);
       }
