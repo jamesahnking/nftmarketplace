@@ -1,13 +1,14 @@
-import { v4 as uuidv4 } from "uuid"
-import { Session } from "next-iron-session"
-import { NextApiRequest, NextApiResponse } from "next"
-import { withSession, contractAddress } from "./utils"
+import { v4 as uuidv4 } from "uuid";
+import { Session } from "next-iron-session";
+import { NextApiRequest, NextApiResponse } from "next";
+import { withSession, contractAddress } from "./utils";
 
-// generate set and return session back with message
-export default withSession (async(req: NextApiRequest & {session: Session}, res: NextApiResponse) => {
+// generate set save and return session back with message
+export default withSession (async(req: NextApiRequest & 
+    {session: Session}, res: NextApiResponse) => {
         if (req.method === "GET") {
             try {
-                
+
                 const message = { contractAddress, id: uuidv4() };
                 req.session.set("message-session", message);
                 await req.session.save();

@@ -1,12 +1,11 @@
-/* eslint-disable @next/next/no-img-element */
-
-import type { NextPage } from 'next'
-import { ChangeEvent, useState } from 'react'
-import { BaseLayout } from '@ui'
-import { Switch } from '@headlessui/react'
-import Link from 'next/link'
-import { NftMeta } from '@_types/nft'
-import axios from 'axios'
+ /* eslint-disable @next/next/no-img-element */
+import type { NextPage } from 'next';
+import { ChangeEvent, useState } from 'react';
+import { BaseLayout } from '@ui';
+import { Switch } from '@headlessui/react';
+import Link from 'next/link';
+import { NftMeta } from '@_types/nft';
+import axios from 'axios';
 
 
 const ATTRIBUTES = ["cuteness", "attack", "bite","hunger" , "jealousy" , "thirst"]
@@ -31,7 +30,7 @@ const NftCreate: NextPage = () => {
       ]
     });
 
-    // Change change event handling 
+    // Change event handling
     const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
     {
       // Get the value from the target 
@@ -54,8 +53,10 @@ const NftCreate: NextPage = () => {
 
     //Create NFT Session GET Message 
     const createNft = async () => {
+      
       try{
         const messageToSign = await axios.get("/api/verify");
+        console.log(messageToSign.data);
       } catch (e: any) {
         console.error(e.message);
       }

@@ -6,9 +6,7 @@ const NETWORKS = {
 }
 
 type NETWORK = typeof NETWORKS;
-
 const targetNetwork = process.env.NEXT_PUBLIC_NETWORK_ID as keyof NETWORK;
-
 export const contractAddress = contract["networks"][targetNetwork]["address"];
 
 // set session // save to cookies to browser
