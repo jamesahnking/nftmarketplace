@@ -44,16 +44,16 @@ export const addressCheckMiddleware = async (req:
                 "\x19Ethereum Signed Message:\n" +
                 JSON.stringify(message).length + 
                 JSON.stringify(message);
-                
-                // load up parameters to make the check 
-                nonce = util.keccak(Buffer.from(nonce, "utf-8"));
-                const { v, r, s } = util.fromRpcSig(req.body.signature);
-                const pubKey = util.ecrecover(util.toBuffer(nonce), v,r,s);
-                const addrBuffer = util.pubToAddress(pubKey);
-                const address = util.bufferToHex(addrBuffer);
-                
-                // const name = await contract.name();
-                console.log(address);
+
+                console.log(nonce);
+          
+              nonce = util.keccak(Buffer.from(nonce, "utf-8"));
+              const { v, r, s } = util.fromRpcSig(req.body.signature);
+              const pubKey = util.ecrecover(util.toBuffer(nonce), v,r,s);
+              const addrBuffer = util.pubToAddress(pubKey);
+              const address = util.bufferToHex(addrBuffer);
+          
+              console.log(address);
                 
                 // verify address and sig
                 if(address === req.body.address) {
