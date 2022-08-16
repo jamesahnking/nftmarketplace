@@ -29,6 +29,21 @@ const NftCreate: NextPage = () => {
       ]
     });
 
+    // Get image
+    const handleImgae = async (e: ChangeEvent<HTMLInputElement>) =>
+    {
+      // Does the image exist.
+      if(!e.target.files) {
+        console.error("Select a file");
+        return;
+      }
+      // Create bytes representation of the image
+      const file = e.target.files[0];
+      const buffer = await file.arrayBuffer();
+      const bytes = new Uint8Array(buffer);
+      console.log(bytes);
+    }
+
     // Change event handling
     const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
     {
@@ -253,6 +268,7 @@ const NftCreate: NextPage = () => {
                           >
                             <span>Upload a file</span>
                             <input
+                              onChange={handleImgae}
                               id="file-upload"
                               name="file-upload"
                               type="file"
