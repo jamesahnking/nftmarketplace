@@ -5,7 +5,6 @@ import * as util from "ethereumjs-util";
 import contract from "../../public/contracts/NftMarket.json";
 import { NftMarketContract } from "@_types/nftMarketContract";
 
-
 const NETWORKS = {
     "5777" : "Ganache"
 }
@@ -14,6 +13,10 @@ type NETWORK = typeof NETWORKS;
 const abi = contract.abi;
 const targetNetwork = process.env.NEXT_PUBLIC_NETWORK_ID as keyof NETWORK;
 export const contractAddress = contract["networks"][targetNetwork]["address"];
+
+//Pinata IFPS
+export const pinataApiKey = process.env.PINATA_API_KEY as string; 
+export const pinataSecretApiKey = process.env.PINATA_SECRET_API_KEY as string;
 
 // set session // save to cookies to browser
 export function withSession(handler: any) {
