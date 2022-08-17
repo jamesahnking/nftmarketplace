@@ -47,7 +47,7 @@ const NftCreate: NextPage = () => {
     const handleImgae = async (e: ChangeEvent<HTMLInputElement>) =>
     {
       // Does the image exist.
-      if(!e.target.files) {
+      if(!e.target.files || e.target.files.length === 0) {
         console.error("Select a file");
         return;
       }
