@@ -29,7 +29,21 @@ const NftCreate: NextPage = () => {
       ]
     });
 
-    // Get image
+    // Sign and Save the Data
+    const getSignedData = async () => {
+      const messageToSign = await axios.get("/api/verify");
+      const accounts = await ethereum?.request({method: "eth_requestAccounts"}) as string[];
+      const account = accounts[0];
+
+      const signedData = await ethereum?.request({
+        method:"personal_sign",
+        params: [JSON.stringify(messageToSign.data), account, messageToSign.data.id]
+      })
+
+      return {signedData, account};
+    } 
+
+    // Get Image
     const handleImgae = async (e: ChangeEvent<HTMLInputElement>) =>
     {
       // Does the image exist.
@@ -42,6 +56,12 @@ const NftCreate: NextPage = () => {
       const buffer = await file.arrayBuffer();
       const bytes = new Uint8Array(buffer);
       console.log(bytes);
+
+      try {
+        const {signedData, account} = await getSignedData();
+      } catch(e: any) {
+        console.error(e.message);
+      }
     }
 
     // Change event handling
@@ -67,19 +87,10 @@ const NftCreate: NextPage = () => {
 
     //Create NFT Session GET/POST
     const createNft = async () => {
-      
       try{
-        const messageToSign = await axios.get("/api/verify");
-        const accounts = await ethereum?.request({method: "eth_requestAccounts"}) as string[];
-        const account = accounts[0];
-       
-        // sign the message
-        const signedData = await ethereum?.request({
-          method: "personal_sign",
-          params: [JSON.stringify(messageToSign.data), account, messageToSign.data.id]
-        })
-
+        const {signedData, account} = await getSignedData();
         // debugger
+        
         await axios.post("/api/verify", {
           address: account, 
           signature: signedData, 
