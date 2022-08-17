@@ -35,3 +35,11 @@ export type FileReq = {
     contentType: string;
     fileName: string;
   }
+
+// Pinata Response Export
+export type PinataRes = {
+    IpfsHash: string;
+    PinSize: number;
+    Timestamp: string;
+    isDuplicate: boolean;
+}
