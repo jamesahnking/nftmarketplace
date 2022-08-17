@@ -22,7 +22,16 @@ export type NftCore = {
     creator: string;
     isListed: boolean
 }
+
 //Core and Meta Export
 export type Nft = {
     meta: NftMeta 
 } & NftCore
+
+
+//Byte Array Export
+export type FileReq = {
+    bytes: Uint8Array;
+    contentType: string;
+    fileName: string;
+}
