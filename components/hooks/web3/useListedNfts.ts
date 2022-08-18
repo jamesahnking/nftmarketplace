@@ -3,7 +3,7 @@ import { Nft } from "@_types/nft";
 import { ethers } from "ethers";
 import { useCallback } from "react";
 import useSWR from "swr";
-
+import { toast } from "react-toastify";
 
 // UseLIstedNftsHook provides list of nfts to the application via we3 from the chain.
 
@@ -52,9 +52,14 @@ const {data, ...swr} = useSWR(
             value: ethers.utils.parseEther(value.toString())
           }
         )
-        await result?.wait();
-        alert("You have bought Nft. See profile page.")
-      
+
+        await toast.promise(
+          result!.wait(), {
+            pending: "Processing transaction",
+            success: "Your NFT has been purchased! Got to your Profile Page",
+            error: "Processing error"
+          }
+        );
       } catch (e: any) {
         console.error(e.message);
       }

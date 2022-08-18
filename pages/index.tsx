@@ -1,9 +1,11 @@
 import type { NextPage } from 'next';
 import { BaseLayout, NftList } from '@ui';
-import { useListedNfts } from '@hooks/web3';
+import { useNetwork } from '@hooks/web3';
+import { ExclamationIcon } from '@heroicons/react/solid';
 
 // @dev - This is your applications homepage 
 const Home: NextPage = () => {
+  const { network } = useNetwork();
   // Load Web3 provider and contract
   // const { provider, contract } = useWeb3();
 
@@ -22,7 +24,27 @@ const Home: NextPage = () => {
               Mint a Fuurzl and trade with your friends!
             </p>
           </div>
-        <NftList />
+          { network.isConnectedToNetwork ?
+            <NftList /> :
+            <div className="rounded-md bg-yellow-50 p-4 mt-10">
+              <div className="flex">
+                <div className="flex-shrink-0">
+                  <ExclamationIcon className="h-5 w-5 text-yellow-400" aria-hidden="true" />
+                </div>
+                <div className="ml-3">
+                  <h3 className="text-sm font-medium text-yellow-800">Attention needed</h3>
+                  <div className="mt-2 text-sm text-yellow-700">
+                    <p>
+                    { network.isLoading ?
+                      "Loading..." :
+                      `Connect to ${network.targetNetwork}`
+                    }
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          }
         </div>
       </div>
     </BaseLayout>
