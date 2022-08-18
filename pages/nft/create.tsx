@@ -8,7 +8,9 @@ import { NftMeta, PinataRes } from '@_types/nft';
 import axios from 'axios';
 import { useWeb3 } from '@providers/web3';
 
-const ATTRIBUTES = ["cuteness", "attack", "bite","hunger" , "jealousy" , "thirst"]
+// const ATTRIBUTES = ["cuteness", "attack", "bite","hunger" , "jealousy" , "thirst"]
+
+const ALLOWED_FIELDS = ["name", "description", "image", "attributes"];
 
 const NftCreate: NextPage = () => {
     const {ethereum} = useWeb3();
@@ -74,14 +76,14 @@ const NftCreate: NextPage = () => {
           ...nftMeta,
           image: 
           `${process.env.NEXT_PUBLIC_PINATA_DOMAIN}/ipfs/${data.IpfsHash}`
-        })
-
-
+        });
         console.log(res.data);
       } catch(e: any) {
         console.error(e.message);
       }
     }
+
+
 
     // Change event handling
     const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
@@ -104,23 +106,43 @@ const NftCreate: NextPage = () => {
       })
     }
 
-    //Create NFT Session GET/POST
-    const createNft = async () => {
+    //Create NFT Session POST
+    const uploadMetadata = async () => {
       try{
         const {signedData, account} = await getSignedData();
         // debugger
         
-        await axios.post("/api/verify", {
+        const res = await axios.post("/api/verify", {
           address: account, 
           signature: signedData, 
           nft: nftMeta
         })
+        
+        const data = res.data as PinataRes;
+        // construct ipfs URI 
+        setNftURI(`${process.env.NEXT_PUBLIC_PINATA_DOMAIN}/ipfs/${data.IpfsHash}`);
 
-        console.log(signedData);
       } catch (e: any) {
         console.error(e.message);
       }
     }
+
+    const createNft = async () => {
+      try {
+        const nftRes = await axios.get(nftURI);
+        const content = nftRes.data;
+        // Make sure JSON is valid before listing
+        Object.keys(content).forEach(key => {
+          if(!ALLOWED_FIELDS.includes(key)) {
+            throw new Error("Invalid Json structure");
+          }
+        })
+
+        alert("Can create NFT");
+      } catch(e: any) {
+        console.error(e.message);
+        }
+      }
   
     return (
      <BaseLayout>
@@ -208,6 +230,7 @@ const NftCreate: NextPage = () => {
                   </div>
                   <div className="px-4 py-3 bg-gray-50 text-right sm:px-6">
                     <button
+                      onClick={createNft}
                       type="button"
                       className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                     >
@@ -241,9 +264,9 @@ const NftCreate: NextPage = () => {
                       <input
                         value={nftMeta.name}
                         onChange={handleChange}
-                        type="text"
-                        name="name"
                         id="name"
+                        name="name"
+                        type="text"
                         className="focus:ring-indigo-500 focus:border-indigo-500 flex-1 block w-full rounded-none rounded-r-md sm:text-sm border-gray-300"
                         placeholder="My Nice Furrzl NFT"
                       />
@@ -336,7 +359,7 @@ const NftCreate: NextPage = () => {
                 </div>
                 <div className="px-4 py-3 bg-gray-50 text-right sm:px-6">
                   <button
-                  onClick={createNft}
+                  onClick={uploadMetadata}
                     type="button"
                     className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                   >
