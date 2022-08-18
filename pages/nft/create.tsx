@@ -14,7 +14,8 @@ const ALLOWED_FIELDS = ["name", "description", "image", "attributes"];
 
 const NftCreate: NextPage = () => {
     const {ethereum} = useWeb3();
-    const [nftURI, setNftURI] = useState(""); //json data
+    const [nftURI, setNftURI] = useState(""); //json data link
+    const [price, setPrice] = useState("");
     const [hasURI, setHasURI] = useState(false);
     //Form Data 
     const [nftMeta, setNftMeta] = useState<NftMeta> ({
@@ -138,7 +139,7 @@ const NftCreate: NextPage = () => {
           }
         })
 
-        alert("Can create NFT");
+        alert(price);
       } catch(e: any) {
         console.error(e.message);
         }
@@ -219,7 +220,8 @@ const NftCreate: NextPage = () => {
                       </label>
                       <div className="mt-1 flex rounded-md shadow-sm">
                         <input
-                          type="number"
+                          onChange={(e) => setPrice(e.target.value)}
+                          type={price}
                           name="price"
                           id="price"
                           className="focus:ring-indigo-500 focus:border-indigo-500 flex-1 block w-full rounded-none rounded-r-md sm:text-sm border-gray-300"
