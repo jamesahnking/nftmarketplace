@@ -9,7 +9,6 @@ import axios from 'axios';
 import { useWeb3 } from '@providers/web3';
 import { ethers } from 'ethers';
 import { toast } from 'react-toastify';
-import { toAscii } from 'ethereumjs-util';
 
 // const ATTRIBUTES = ["cuteness", "attack", "bite","hunger" , "jealousy" , "thirst"]
 
