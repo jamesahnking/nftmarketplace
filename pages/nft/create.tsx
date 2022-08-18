@@ -8,6 +8,8 @@ import { NftMeta, PinataRes } from '@_types/nft';
 import axios from 'axios';
 import { useWeb3 } from '@providers/web3';
 import { ethers } from 'ethers';
+import { toast } from 'react-toastify';
+import { toAscii } from 'ethereumjs-util';
 
 // const ATTRIBUTES = ["cuteness", "attack", "bite","hunger" , "jealousy" , "thirst"]
 
@@ -64,13 +66,22 @@ const NftCreate: NextPage = () => {
       try {
         const {signedData, account} = await getSignedData();
         // image verfication 
-       const res =  await axios.post("/api/verify-image", {
+       const promise =  axios.post("/api/verify-image", {
           address: account, 
           signature: signedData, 
           bytes,
           contentType: file.type,
           fileName: file.name.replace(/\.[^/.]+$/, "")
         });
+
+        // response promise for loaders
+        const res = await toast.promise(
+          promise, {
+            pending: "Uploading Image",
+            success: "Image uploaded",
+            error: "Image upload error"
+          }
+        )
 
         const data = res.data as PinataRes;
 
@@ -114,11 +125,20 @@ const NftCreate: NextPage = () => {
         const {signedData, account} = await getSignedData();
         // debugger
         
-        const res = await axios.post("/api/verify", {
+        const promise =  axios.post("/api/verify", {
           address: account, 
           signature: signedData, 
           nft: nftMeta
         })
+
+        // response promise for loaders
+        const res = await toast.promise(
+          promise, {
+            pending: "Uploading metadata",
+            success: "Metadata uploaded",
+            error: "Metadata upload error"
+          }
+        )
         
         const data = res.data as PinataRes;
         // construct ipfs URI 
@@ -147,9 +167,15 @@ const NftCreate: NextPage = () => {
             value: ethers.utils.parseEther(0.025.toString())
           }
         );
-
-        await tx?.wait();
-        alert(`Your NFT has been created and will be listed @ ${price}`);
+          await toast.promise(
+            tx!.wait(), {
+              pending: "Uploading metadata",
+              success: "Metadata uploaded",
+              error: "Metadata upload error"
+            }
+          );
+        // await tx?.wait();
+        // alert(`Your NFT has been created and will be listed @ ${price}`);
       } catch(e: any) {
         console.error(e.message);
         }
