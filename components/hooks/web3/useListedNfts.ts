@@ -5,7 +5,7 @@ import { useCallback } from "react";
 import useSWR from "swr";
 import { toast } from "react-toastify";
 
-// UseLIstedNftsHook provides list of nfts to the application via we3 from the chain.
+// UseLIstedNftsHook provides list of nfts to the application via web3 from the chain.
 
 type UseListedNftsResponse = { 
   buyNft: (token: number, value: number) => Promise<void>
@@ -37,8 +37,7 @@ const {data, ...swr} = useSWR(
             meta
         })
       }
-          // debugger
-          return nfts; //return list of nfts
+      return nfts; //return list of nfts
           }
         )    
     
